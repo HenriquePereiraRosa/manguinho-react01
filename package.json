@@ -3,6 +3,12 @@
   "description": "NodeJs Rest API using TDD, Clean Architecture and Typescript",
   "author": "Henrique P Rosa",
   "license": "GNU GPL3",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "npm test -- --watch",
+    "test:staged": "npm test -- --findRelatedTests"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^27.4.1",
