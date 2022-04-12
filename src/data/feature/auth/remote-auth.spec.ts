@@ -1,4 +1,4 @@
-import { RemoteAuth } from "./remote-auth."
+import { RemoteAuth } from './remote-auth.'
 
 interface PostClient {
   post(url: String): Promise<void>
@@ -9,7 +9,7 @@ describe('RemoteAuth', () => {
     class PostClientSpy implements PostClient {
       url?: string
 
-      post(url: string): Promise<void> {
+      async post (url: string): Promise<void> {
         this.url = url
         return Promise.resolve()
       }

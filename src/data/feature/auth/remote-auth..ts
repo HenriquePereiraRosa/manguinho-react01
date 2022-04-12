@@ -1,13 +1,12 @@
-import { PostClient } from "./protocols/post-client";
+import { PostClient } from './protocols/post-client';
 
 export class RemoteAuth {
-  constructor(
+  constructor (
     private readonly url: string,
-    private readonly postClient: PostClient,
+    private readonly postClient: PostClient
   ) { }
 
-  async auth(): Promise<void> {
+  async auth (): Promise<void> {
     await this.postClient.post(this.url)
   }
-
 }
