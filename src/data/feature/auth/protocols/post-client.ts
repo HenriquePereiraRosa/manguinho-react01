@@ -1,3 +1,3 @@
 export interface PostClient {
-  post(url: String): Promise<void>
+  post(url: string): Promise<void>
 }

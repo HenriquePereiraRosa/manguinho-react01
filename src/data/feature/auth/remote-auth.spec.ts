@@ -1,7 +1,7 @@
 import { RemoteAuth } from './remote-auth.'
 
 interface PostClient {
-  post(url: String): Promise<void>
+  post(url: string): Promise<void>
 }
 
 describe('RemoteAuth', () => {
