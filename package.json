@@ -7,13 +7,19 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
+    "clean": "rimraf dist",
     "test": "jest --coverage",
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
     "lint": "eslint .",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "build": "npm run clean && tsc",
+    "build:prod": "npm run clean && tsc -p tsconfig-prod.json",
+    "start": "npm run build && node dist/main/api"
   },
-  "dependencies": {},
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",

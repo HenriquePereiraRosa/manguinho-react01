@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "target": "es6",
     "lib": [
       "dom",
@@ -10,15 +11,28 @@
     "module": "esnext",
     "moduleResolution": "node",
     "jsx": "react",
-    "rootDirs": ["src"],
+    "rootDirs": [
+      "src"
+    ],
+    "outDir": "dist",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"],
-      "@/tests/*": ["../tests/*"]
+      "@/*": [
+        "*"
+      ],
+      "@/tests/*": [
+        "../tests/*"
+      ]
     },
+    "sourceMap": true,
+    "skipLibCheck": true,
     "allowJs": true,
+    "strict": true, // group all other sctrict rules in one rule
+    "removeComments": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "tests"],
-  "exclude": []
+  "include": [
+    "src",
+    "tests"
+  ]
 }
