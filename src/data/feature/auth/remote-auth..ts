@@ -1,4 +1,4 @@
-import { PostClient } from './protocols/post-client';
+import { PostClient } from '../../protocols/post-client';
 
 export class RemoteAuth {
   constructor (
