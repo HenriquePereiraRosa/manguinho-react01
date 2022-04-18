@@ -1,10 +1,10 @@
-import { PostClient } from "../protocols"
+import { PostClient, PostClientParams } from "../protocols"
 
 export class PostClientSpy implements PostClient {
   url?: string
 
-  async post(url: string): Promise<void> {
-    this.url = url
+  async post(params: PostClientParams): Promise<void> {
+    this.url = params.url
     return Promise.resolve()
   }
 }
