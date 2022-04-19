@@ -1,5 +1,5 @@
 import { AuthenticationParams } from '@/domain/feature/auth';
-import { PostClient } from '../../protocols/post-client';
+import { PostClient } from '@/data/protocols/post-client';
 
 export class RemoteAuth {
   constructor (

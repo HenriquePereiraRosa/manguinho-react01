@@ -1,7 +1,7 @@
 import { AuthenticationParams } from "../feature/auth";
-
+import { faker } from '@faker-js/faker'
 
 export const mockAuth = (): AuthenticationParams => ({
-  email: 'any_email',
-  password: 'any_password'
+  email: faker.internet.email(),
+  password: faker.internet.password()
 })
