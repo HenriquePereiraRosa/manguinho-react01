@@ -1,3 +1,4 @@
+import { mockAuth } from '@/domain/test/mock-auth'
 import { PostClientSpy } from '../../test/mock-http-client'
 import { RemoteAuth } from './remote-auth.'
 
@@ -21,5 +22,13 @@ describe('RemoteAuth', () => {
     const { sut, postClientSpy } = makeSut(url)
     await sut.auth()
     expect(postClientSpy.url).toBe(url)
+  })
+
+
+  it('Should call PostClient with correct BOdy', async () => {
+    const authParams = mockAuth()
+    const { sut, postClientSpy } = makeSut()
+    await sut.auth(authParams)
+    expect(postClientSpy.body).toEqual(authParams)
   })
 })
