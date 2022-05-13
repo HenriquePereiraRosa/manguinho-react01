@@ -1,12 +1,16 @@
-import { PostClient, PostClientParams } from "../protocols"
+import { PostClient, PostClientParams } from "../protocols/http"
+import { HttpResponse, HttpStatusCode } from "../protocols/http"
 
 export class PostClientSpy implements PostClient {
   url?: string
-  body?: object
+  body?: any
+  response: HttpResponse = {
+    statusCode: HttpStatusCode.noContent
+  }
 
-  async post(params: PostClientParams): Promise<void> {
+  async post(params: PostClientParams): Promise<HttpResponse> {
     this.url = params.url
     this.body = params.body
-    return Promise.resolve()
+    return Promise.resolve(this.response)
   }
 }
