@@ -1,6 +1,8 @@
 import { HttpStatusCode } from '@/data/protocols/http'
 import { PostClientSpy } from '@/data/test/mock-http-client'
-import { InvalidCredentialsError } from '@/domain/errors/Invalid-credentials-error'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
+import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
+import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { mockAuth } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth.'
 
@@ -42,4 +44,24 @@ describe('RemoteAuth', () => {
     const promise = sut.auth(mockAuth())
     expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
+
+  it('Should throw InvalidParameters if PostClient returns 400', async () => {
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.auth(mockAuth())
+    expect(promise).rejects.toThrow(new InvalidParametersError())
+  })
+
+
+  it('Should throw UnexpectedError if PostClient returns 500', async () => {
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.internalError
+    }
+    const promise = sut.auth(mockAuth())
+    expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
 })

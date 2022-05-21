@@ -1,5 +1,7 @@
 import { HttpStatusCode, PostClient } from '@/data/protocols/http';
-import { InvalidCredentialsError } from '@/domain/errors/Invalid-credentials-error';
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error';
+import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error';
+import { UnexpectedError } from '@/domain/errors/unexpected-error';
 import { AuthenticationParams } from '@/domain/feature/auth';
 
 export class RemoteAuth {
@@ -14,8 +16,14 @@ export class RemoteAuth {
       body: params
     })
 
+    if(res.statusCode == HttpStatusCode.badRequest) {
+      throw new InvalidParametersError()
+    }
     if(res.statusCode == HttpStatusCode.unauthorized) {
       throw new InvalidCredentialsError()
+    }
+    if(res.statusCode == HttpStatusCode.internalError) {
+      throw new UnexpectedError()
     }
 
     return Promise.resolve()
