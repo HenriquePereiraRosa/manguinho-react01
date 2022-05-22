@@ -25,6 +25,9 @@ describe('RemoteAuth', () => {
   it('Should call PostClient with correct URL', async () => {
     const url = 'any_url'
     const { sut, postClientSpy } = makeSut(url)
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok
+    }
     await sut.auth()
     expect(postClientSpy.url).toBe(url)
   })
@@ -32,6 +35,9 @@ describe('RemoteAuth', () => {
   it('Should call PostClient with correct Body', async () => {
     const authParams = mockAuth()
     const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok
+    }
     await sut.auth(authParams)
     expect(postClientSpy.body).toEqual(authParams)
   })
@@ -68,6 +74,12 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.internalError
     }
+    const promise = sut.auth(mockAuth())
+    expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should throw UnexpectedError for unexpected returns', async () => {
+    const { sut, postClientSpy } = makeSut()
     const promise = sut.auth(mockAuth())
     expect(promise).rejects.toThrow(new UnexpectedError())
   })

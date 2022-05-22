@@ -33,5 +33,7 @@ export class RemoteAuth {
     if(res.statusCode == HttpStatusCode.internalError) {
       throw new UnexpectedError()
     }
+
+    throw new UnexpectedError()
   }
 }
