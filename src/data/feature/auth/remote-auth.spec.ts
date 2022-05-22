@@ -2,9 +2,10 @@ import { HttpStatusCode } from '@/data/protocols/http'
 import { PostClientSpy } from '@/data/test/mock-http-client'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
+import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { mockAuth } from '@/domain/test/mock-auth'
-import { RemoteAuth } from './remote-auth.'
+import { RemoteAuth } from './remote-auth'
 
 type SutTypes = {
   sut: RemoteAuth,
@@ -35,6 +36,14 @@ describe('RemoteAuth', () => {
     expect(postClientSpy.body).toEqual(authParams)
   })
 
+  it('Should throw InvalidParameters if PostClient returns 400', async () => {
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const promise = sut.auth(mockAuth())
+    expect(promise).rejects.toThrow(new InvalidParametersError())
+  })
 
   it('Should throw InvalidCredentialsError if PostClient returns 401', async () => {
     const { sut, postClientSpy } = makeSut()
@@ -45,15 +54,14 @@ describe('RemoteAuth', () => {
     expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw InvalidParameters if PostClient returns 400', async () => {
+  it('Should throw NotFoundError if PostClient returns 404', async () => {
     const { sut, postClientSpy } = makeSut()
     postClientSpy.response = {
-      statusCode: HttpStatusCode.badRequest
+      statusCode: HttpStatusCode.notFound
     }
     const promise = sut.auth(mockAuth())
-    expect(promise).rejects.toThrow(new InvalidParametersError())
+    expect(promise).rejects.toThrow(new NotFoundError())
   })
-
 
   it('Should throw UnexpectedError if PostClient returns 500', async () => {
     const { sut, postClientSpy } = makeSut()
