@@ -7,6 +7,7 @@ export enum HttpStatusCode {
   internalError = 500
 }
 
-export type HttpResponse = {
-  statusCode: HttpStatusCode
+export type HttpResponse<T> = {
+  statusCode: HttpStatusCode,
+  body?: T
 }

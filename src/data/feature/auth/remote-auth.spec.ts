@@ -4,16 +4,18 @@ import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-err
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
+import { AuthenticationParams } from '@/domain/feature/auth'
+import { AccountModel } from '@/domain/model/account-model'
 import { mockAuth } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
 
 type SutTypes = {
   sut: RemoteAuth,
-  postClientSpy: PostClientSpy
+  postClientSpy: PostClientSpy<AuthenticationParams, AccountModel>
 }
 
 const makeSut = (url: string = 'any_url'): SutTypes => {
-  const postClientSpy = new PostClientSpy()
+  const postClientSpy = new PostClientSpy<AuthenticationParams, AccountModel>()
   const sut = new RemoteAuth(url, postClientSpy)
   return {
     sut,
@@ -22,23 +24,25 @@ const makeSut = (url: string = 'any_url'): SutTypes => {
 }
 
 describe('RemoteAuth', () => {
-  it('Should call PostClient with correct URL', async () => {
+  it('Should call PostClient with correct URL (http 200)', async () => {
     const url = 'any_url'
     const { sut, postClientSpy } = makeSut(url)
     postClientSpy.response = {
       statusCode: HttpStatusCode.ok
     }
     await sut.auth()
+    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
     expect(postClientSpy.url).toBe(url)
   })
 
-  it('Should call PostClient with correct Body', async () => {
+  it('Should call PostClient with correct Body (http 200)', async () => {
     const authParams = mockAuth()
     const { sut, postClientSpy } = makeSut()
     postClientSpy.response = {
       statusCode: HttpStatusCode.ok
     }
     await sut.auth(authParams)
+    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
     expect(postClientSpy.body).toEqual(authParams)
   })
 
