@@ -12,14 +12,14 @@ export class RemoteAuth {
     private readonly postClient: PostClient<AuthenticationParams, AccountModel>	
   ) { }
 
-  async auth (params?: AuthenticationParams): Promise<void> {
+  async auth (params?: AuthenticationParams): Promise<AccountModel> {
     const res = await this.postClient.post({
       url: this.url,
       body: params
     })
 
     if(res.statusCode == HttpStatusCode.ok) {
-      return Promise.resolve()
+      return res.body
     }
 
     if(res.statusCode == HttpStatusCode.badRequest) {

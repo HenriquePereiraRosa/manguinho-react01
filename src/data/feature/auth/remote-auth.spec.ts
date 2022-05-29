@@ -6,6 +6,7 @@ import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { AuthenticationParams } from '@/domain/feature/auth'
 import { AccountModel } from '@/domain/model/account-model'
+import { mockAccountModel } from '@/domain/test/mock-account'
 import { mockAuth } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
 
@@ -24,27 +25,6 @@ const makeSut = (url: string = 'any_url'): SutTypes => {
 }
 
 describe('RemoteAuth', () => {
-  it('Should call PostClient with correct URL (http 200)', async () => {
-    const url = 'any_url'
-    const { sut, postClientSpy } = makeSut(url)
-    postClientSpy.response = {
-      statusCode: HttpStatusCode.ok
-    }
-    await sut.auth()
-    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
-    expect(postClientSpy.url).toBe(url)
-  })
-
-  it('Should call PostClient with correct Body (http 200)', async () => {
-    const authParams = mockAuth()
-    const { sut, postClientSpy } = makeSut()
-    postClientSpy.response = {
-      statusCode: HttpStatusCode.ok
-    }
-    await sut.auth(authParams)
-    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
-    expect(postClientSpy.body).toEqual(authParams)
-  })
 
   it('Should throw InvalidParameters if PostClient returns 400', async () => {
     const { sut, postClientSpy } = makeSut()
@@ -88,4 +68,36 @@ describe('RemoteAuth', () => {
     expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
+  it('Should call PostClient with correct URL (http 200)', async () => {
+    const url = 'any_url'
+    const { sut, postClientSpy } = makeSut(url)
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok
+    }
+    await sut.auth()
+    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
+    expect(postClientSpy.url).toBe(url)
+  })
+
+  it('Should call PostClient with correct Body (http 200)', async () => {
+    const authParams = mockAuth()
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok
+    }
+    await sut.auth(authParams)
+    expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
+    expect(postClientSpy.body).toEqual(authParams)
+  })
+
+  it('Should return AccountModel if HttpPostClient return 200', async () => {
+    const { sut, postClientSpy } = makeSut()
+    const result = mockAccountModel()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: result
+    }
+    const account	= await sut.auth(mockAuth())
+    expect(account).toBe(result)
+  })
 })
