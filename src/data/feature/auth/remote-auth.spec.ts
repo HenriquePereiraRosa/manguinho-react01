@@ -63,7 +63,7 @@ describe('RemoteAuth', () => {
   })
 
   it('Should throw UnexpectedError for unexpected returns', async () => {
-    const { sut, postClientSpy } = makeSut()
+    const { sut } = makeSut()
     const promise = sut.auth(mockAuth())
     expect(promise).rejects.toThrow(new UnexpectedError())
   })
