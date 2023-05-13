@@ -9,13 +9,14 @@ import { AccountModel } from '@/domain/model/account-model'
 import { mockAccountModel } from '@/domain/test/mock-account'
 import { mockAuth } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
+import { faker } from '@faker-js/faker';
 
 type SutTypes = {
   sut: RemoteAuth,
   postClientSpy: PostClientSpy<AuthenticationParams, AccountModel>
 }
 
-const makeSut = (url: string = 'any_url'): SutTypes => {
+const makeSut = (url: string = faker.internet.url()): SutTypes => {
   const postClientSpy = new PostClientSpy<AuthenticationParams, AccountModel>()
   const sut = new RemoteAuth(url, postClientSpy)
   return {
@@ -69,7 +70,7 @@ describe('RemoteAuth', () => {
   })
 
   it('Should call PostClient with correct URL (http 200)', async () => {
-    const url = 'any_url'
+    const url = faker.internet.url()
     const { sut, postClientSpy } = makeSut(url)
     postClientSpy.response = {
       statusCode: HttpStatusCode.ok
