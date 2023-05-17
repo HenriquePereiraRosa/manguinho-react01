@@ -27,8 +27,12 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "allowJs": true,
-    //"strict": true, // group all other sctrict rules in one rule
-    // stric disabled due to "return could be null warning"
+
+    /* stric disabled due to "return could be null warning"
+        and i want to return "null" sometimes (ie.: http.body)
+    */
+    // "strict": true, // group all other sctrict rules in one rule
+
     "removeComments": true,
     "resolveJsonModule": true
   },
