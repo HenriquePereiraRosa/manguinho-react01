@@ -9,7 +9,7 @@ module.exports = {
     '!**/*.d.ts' // exclude module files
   ],
   coverageDirectory: 'coverage',
-  setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
+  // setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
   moduleNameMapper: {
     '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1',

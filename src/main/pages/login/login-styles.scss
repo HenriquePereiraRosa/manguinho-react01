@@ -38,16 +38,6 @@ button {
   height: 100vh;
   justify-content: space-between;
 
-  .header {
-    display: flex;
-    flex-direction: column;
-    border-top: 40px solid $primary-dark;
-    background-color: $primary-light;
-    height: 10rem;
-    align-items: center;
-    color: $white;
-  }
-
   .form {
     display: flex;
     flex-direction: column;
@@ -116,10 +106,5 @@ button {
       font-weight: bold;
       color: $color-error-primary-dark;
     }
-  }
-
-  .footer {
-    background-color: $primary-dark;
-    height: 1rem;
   }
 }

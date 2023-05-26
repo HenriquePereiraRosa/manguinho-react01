@@ -2,15 +2,13 @@ import React from 'react'
 import Styles from './login-styles.scss'
 import FaCircleCheck from '@/presentation/components/icons/fa-circle-check'
 import CircleSpinner from '@/presentation/components/spinners/circle-spinner/circle-spinner'
-import Logo from '@/presentation/components/images/logo/logo'
+import HeaderLogin from '@/presentation/components/header/header-login/header-login'
+import Footer from '@/presentation/components/footer/footer'
 
 const Login: React.FC = () => {
   return (
     <div className={Styles.login}>
-      <header className={Styles.header}>
-        <Logo />
-        <h1> H8 - Clean React</h1>
-      </header>
+      <HeaderLogin />
       <form className={Styles.form}>
         <h2>Login</h2>
 
@@ -35,7 +33,7 @@ const Login: React.FC = () => {
 
       </form>
 
-      <footer className={Styles.footer}></footer>
+      <Footer />
     </div>
   )
 }

@@ -1,0 +1,13 @@
+@import "./../../../styles/global-colors.scss";
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 40px solid $primary-dark;
+  background-color: $primary-light;
+  height: 10rem;
+  align-items: center;
+  color: $white;
+}
