@@ -4,15 +4,15 @@ import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-err
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { AuthenticationParams } from '@/domain/feature/auth'
-import { AccountModel } from '@/domain/model/account-model'
+import { type AuthenticationParams } from '@/domain/feature/auth'
+import { type AccountModel } from '@/domain/model/account-model'
 import { mockAccountModel } from '@/domain/test/mock-account'
 import { mockAuthParams } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
-  sut: RemoteAuth,
+  sut: RemoteAuth
   postClientSpy: PostClientSpy<AuthenticationParams, AccountModel>
 }
 
@@ -26,7 +26,6 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
 }
 
 describe('RemoteAuth', () => {
-
   it('Should throw InvalidParameters if PostClient returns 400', async () => {
     const { sut, postClientSpy } = makeSut()
     postClientSpy.response = {
@@ -98,7 +97,7 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.ok,
       body: result
     }
-    const account	= await sut.auth(mockAuthParams())
+    const account = await sut.auth(mockAuthParams())
     expect(account).toBe(result)
   })
 })

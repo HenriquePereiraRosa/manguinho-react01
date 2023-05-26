@@ -1,26 +1,39 @@
 {
-  "env": {
-      "es2021": true,
-      "node": true
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   },
   "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended"
+    "standard-with-typescript",
+    "plugin:react/recommended",
+    "plugin:cypress/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-      "@typescript-eslint"
-  ],
+  "parserOptions": {
+    "project": "./tsconfig-eslint.json",
+    "tsconfigRootDir": "./",
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": { "jsx": true }
+  },
+  "env": { "es6": true },
+  "plugins": ["react"],
+  "ignorePatterns": ["node_modules/"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-      "indent": [
-          "error",
-          2
-      ],
-      "linebreak-style": [
-          "error",
-          "unix"
-      ]
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/comma-spacing": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "no-redeclare": "off",
+    "import/export": "off",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "linebreak-style": [ 
+        "error",
+        "unix"
+    ]
   }
 }

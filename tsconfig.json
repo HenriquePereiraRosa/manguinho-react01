@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "es6",
     "lib": [
       "dom",
@@ -8,36 +7,30 @@
       "esnext"
     ],
     "esModuleInterop": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "jsx": "react",
-    "rootDirs": [
-      "src"
-    ],
-    "outDir": "dist",
+    "rootDirs": ["src", "tests"],
     "baseUrl": "src",
     "paths": {
-      "@/*": [
-        "*"
-      ],
-      "@/tests/*": [
-        "../tests/*"
-      ]
+      "@/*": ["*"],
+      "@/tests/*": ["..\/tests/*"]
     },
-    "sourceMap": true,
-    "skipLibCheck": true,
     "allowJs": true,
 
     /* stric disabled due to "return could be null warning"
         and i want to return "null" sometimes (ie.: http.body)
+        // "strict": true, // group all other sctrict rules in one rule
     */
-    // "strict": true, // group all other sctrict rules in one rule
+    "strictNullChecks": true,
 
-    "removeComments": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true
   },
   "include": [
     "src",
-    "tests"
-  ]
+    "tests",
+    "jest.config.js",
+    "webpack.config.js"
+  ],
+  "exclude": ["tests/e2e/cypress"]
 }

@@ -1,0 +1,125 @@
+@import "./../../../presentation/styles/global.scss";
+@import "./../../../presentation/styles/global-colors.scss";
+
+input[type="email"],
+input[type="password"] {
+  border-radius: 0.5rem;
+  border: 0.3rem solid $primary-light;
+  line-height: 1.5rem;
+  padding: 0.15rem 1.5rem;
+
+  &:focus {
+    outline-color: $primary-light;
+  }
+}
+
+button {
+  background-color: $primary-dark;
+  border-color: $primary-dark;
+  border: 0.15rem solid $color-button-off-dark;
+  border-radius: 0.85rem;
+
+  min-width: fit-content;
+  padding: 0.3rem 2rem;
+
+  color: $white;
+  font-size: 1rem;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    border-color: $color-button-on-dark;
+  }
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    border-top: 40px solid $primary-dark;
+    background-color: $primary-light;
+    height: 10rem;
+    align-items: center;
+    color: $white;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    width: 50vw;
+
+    background-color: $bg;
+    color: $white;
+
+    h2 {
+      color: $primary-light;
+      text-align: center;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      padding-bottom: 0.5rem;
+    }
+
+    .button-component {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+
+      input {
+        flex-grow: 1;
+      }
+
+      .button-status {
+        position: relative;
+        top: 0.4rem;
+        right: 2rem;
+        cursor: help;
+      }
+    }
+
+    .button-submit {
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .link {
+      margin-top: 1rem;
+      cursor: pointer;
+
+      text-align: center;
+
+      color: $primary-light;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .spinner {
+      margin-top: 1rem;
+    }
+
+    .error {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: $color-error-primary-dark;
+    }
+  }
+
+  .footer {
+    background-color: $primary-dark;
+    height: 1rem;
+  }
+}

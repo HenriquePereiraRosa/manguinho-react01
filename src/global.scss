@@ -1,0 +1,166 @@
+/******** BASE ***********************/
+:root {
+  --red-999: #f00;
+  --red-900: #d10000;
+  --red-800: #fd4545;
+  --red-700: #ac0202;
+  --red-300_rgba-500: rgba(240, 192, 194, 0.5);
+  --red-700_hue: hsl(357deg 95% 64%);
+  --red-600_hue: rgb(253, 84, 93);
+  --red-500: rgb(253, 120, 126);
+  --red-400: rgb(250, 150, 155);
+  --red-300: rgb(240, 192, 194);
+
+  --white-999: #fff;
+  --white-900: #f0f0f0;
+
+  --gray-400: #969696;
+  --gray-300: #b1b1b1;
+  --gray-200: #cacaca;
+  --gray-150: #e0e0e0;
+  --gray-100: #e9e9e9;
+
+  --black-999: rgb(5, 5, 5);
+  --black-980: rgb(27, 27, 27);
+  --black-950: rgb(46, 46, 46);
+  --black-650: rgb(80, 80, 80);
+  --black-600: rgb(61, 61, 61);
+  --black-550: rgb(100, 100, 100);
+  --black-500: rgb(119, 119, 119);
+
+  --gb-base-color: var(--red-700_hue);
+  --gb-bg-color: var(--white-900);
+  --gb-active-color: var(--red-999);
+  --gb-inactive-color: var(--gb-bg-color);
+  --gb-box-shadow: var(--red-300);
+  --gb-card-box-shadow: var(--red-300);
+  --gb-button-bg: var(--red-700_hue);
+  --gb-button-active: var(--red-999);
+  --gb-text-color: var(--black-950);
+  --gb-text-secondary-color: var(--red-500);
+  --gb-card-border-color: var(--black-500);
+  --gb-card-img-border-color: var(--gray-300);
+  --gb-spinner-bg-color: var(--gray-200);
+  --gb-line-color: var(--red-300);
+  --gb-error: var(--red-999);
+
+  --max-width: 1920px;
+}
+
+[data-theme="dark"] {
+  --gb-base-color: var(--red-600_hue);
+  --gb-bg-color: var(--black-950);
+  --gb-active-color: var(--red-700);
+  --gb-inactive-color: var(--gb-bg-color);
+  --gb-box-shadow: var(--red-300_rgba-500);
+  --gb-card-box-shadow: var(--black-600);
+  --gb-card-line-color: var(--black-550);
+  --gb-button-bg: var(--red-700_hue);
+  --gb-button-active: var(--red-800);
+  --gb-text-color: var(--white-900);
+  --gb-text-secondary-color: var(--red-500);
+  --gb-spinner-bg-color: var(--black-500);
+  --gb-card-border-color: var(--black-650);
+  --gb-card-img-border-color: var(--gray-300);
+  --gb-line-color: var(--black-600);
+  --gb-error: var(--red-900);
+}
+
+@media (max-width: 1080px) {
+  html {
+    font-size: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+body,
+input,
+textarea,
+select,
+button {
+  font-size: 1rem;
+}
+
+// =============== RESET =================/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+/* clears the 'X' from Internet Explorer */
+input[type="search"]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type="search"]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+// =============== BASE =================/
+
+html,
+body {
+  height: 90%;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+}
+
+body {
+  position: relative;
+  background-color: var(--gb-bg-color);
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.component {
+  margin: 0 auto auto auto;
+}
+
+// =============== CUSTOM =================/
+.invisible {
+  display: none;
+}
