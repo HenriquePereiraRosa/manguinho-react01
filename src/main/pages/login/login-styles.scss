@@ -1,17 +1,7 @@
 @import "./../../../presentation/styles/global.scss";
 @import "./../../../presentation/styles/global-colors.scss";
 
-input[type="email"],
-input[type="password"] {
-  border-radius: 0.5rem;
-  border: 0.3rem solid $primary-light;
-  line-height: 1.5rem;
-  padding: 0.15rem 1.5rem;
 
-  &:focus {
-    outline-color: $primary-light;
-  }
-}
 
 button {
   background-color: $primary-dark;
@@ -54,23 +44,6 @@ button {
       font-size: 1.5rem;
       text-transform: uppercase;
       padding-bottom: 0.5rem;
-    }
-
-    .button-component {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: row;
-
-      input {
-        flex-grow: 1;
-      }
-
-      .button-status {
-        position: relative;
-        top: 0.4rem;
-        right: 2rem;
-        cursor: help;
-      }
     }
 
     .button-submit {

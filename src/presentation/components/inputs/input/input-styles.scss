@@ -1,0 +1,29 @@
+@import "./../../../styles/global-colors.scss";
+
+input {
+  border-radius: 0.5rem;
+  border: 0.3rem solid $primary-light;
+  line-height: 1.5rem;
+  padding: 0.15rem 1.5rem;
+
+  &:focus {
+    outline-color: $primary-light;
+  }
+}
+
+.input-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+
+  input {
+    flex-grow: 1;
+  }
+}
+
+.input-status {
+  position: relative;
+  top: 0.4rem;
+  right: 2rem;
+  cursor: help;
+}
