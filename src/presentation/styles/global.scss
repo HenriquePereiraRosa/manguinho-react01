@@ -11,3 +11,10 @@
 body {
   background-color: $bg;
 }
+
+input[type="password"],
+input[type="email"],
+input[type="text"] {
+  border: none;
+  outline: none;
+}

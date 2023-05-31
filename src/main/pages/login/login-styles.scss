@@ -2,25 +2,6 @@
 @import "./../../../presentation/styles/global-colors.scss";
 
 
-button {
-  background-color: $primary-dark;
-  border-color: $primary-dark;
-  border: 0.15rem solid $color-button-off-dark;
-  border-radius: 0.85rem;
-
-  min-width: fit-content;
-  padding: 0.3rem 2rem;
-
-  color: $white;
-  font-size: 1rem;
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 1;
-    border-color: $color-button-on-dark;
-  }
-}
-
 .login {
   display: flex;
   flex-direction: column;
@@ -45,9 +26,25 @@ button {
       padding-bottom: 0.5rem;
     }
 
-    .button-submit {
+    .button-submit {      
+      background-color: $primary-dark;
+      border-color: $primary-dark;
+      border: 0.15rem solid $color-button-off-dark;
+      border-radius: 0.85rem;
+      
+      min-width: fit-content;
       margin-top: 1rem;
+      padding: 0.3rem 2rem;
+      
       cursor: pointer;
+      color: $white;
+      font-size: 1rem;
+      opacity: 0.8;
+    
+      &:hover {
+        opacity: 1;
+        border-color: $color-button-on-dark;
+      }
     }
 
     .link {
