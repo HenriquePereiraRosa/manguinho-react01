@@ -10,7 +10,7 @@ import { FormContext } from '@/presentation/contexts'
 import { type StateProps } from '@/presentation/contexts/form-context/form-context'
 
 const Login: React.FC = () => {
-  const [formStatusState] = useState<StateProps>({
+  const [formState] = useState<StateProps>({
     isLoading: false,
     errorMessage: ''
   })
@@ -19,15 +19,18 @@ const Login: React.FC = () => {
     <div className={Styles.login}>
       <HeaderLogin />
 
-      <FormContext.Provider value={formStatusState } >
+      <FormContext.Provider value={formState} >
         <form className={Styles.form}>
           <h2>Login</h2>
 
           <Input type="email" name="email" placeholder="Digite seu e-mail" />
           <Input type="password" name="password" placeholder="Digite sua senha" />
 
-          <button className={Styles['button-submit']}
-            type="submit">Entrar</button>
+          <button
+            className={Styles['button-submit']}
+            type="submit"
+            disabled>Entrar</button>
+
           <span className={Styles.link}>Criar conta</span>
 
           <FormLoginStatus />

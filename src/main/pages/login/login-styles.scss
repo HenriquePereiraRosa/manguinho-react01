@@ -45,6 +45,16 @@
         opacity: 1;
         border-color: $color-button-on-dark;
       }
+
+      &:disabled {
+        background-color: $color-button-disabled-dark;
+        border-color: $color-button-disabled-dark;
+        
+        &:hover {
+          opacity: 0.8;
+          border-color: $color-button-disabled-dark;
+        }
+      }
     }
 
     .link {
