@@ -5,7 +5,6 @@ import {
   Routes
 } from 'react-router-dom'
 import Login from '@/main/pages/login/login'
-import '@/presentation/styles/global.scss'
 
 const Router: React.FC = () => {
   return (
