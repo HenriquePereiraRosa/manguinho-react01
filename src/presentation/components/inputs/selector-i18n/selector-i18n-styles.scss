@@ -1,6 +1,6 @@
 @import "./../../../styles/global-colors.scss";
 
-.button {
+.container {
   background-color: $primary-dark;
   border-color: $primary-dark;
   border: 0.15rem solid $color-button-off-dark;
@@ -8,10 +8,10 @@
 
   min-width: fit-content;
   margin-top: 1rem;
-  padding: 0.3rem 2rem;
+  padding: 0.3rem 0.8rem;
 
   color: $white;
-  font-size: 1rem;
+  font-size: 0.9rem;
   opacity: 0.8;
 
   &:hover {

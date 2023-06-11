@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import Styles from './header-login-styles.scss'
 import Logo from '../../images/logo/logo'
-import LanguageSwitcherButton from '../../buttons/button-i18n/button-i18n'
+import LanguageSwitcherButton from '../../inputs/selector-i18n/selector-i18n'
 
 const HeaderLogin: React.FC = (props) => {
   return (
