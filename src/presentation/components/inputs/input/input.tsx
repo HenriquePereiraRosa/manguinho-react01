@@ -1,14 +1,20 @@
 import React from 'react'
-import Styles from './input-styles.scss'
 import FaCircleCheck from '../../icons/fa-circle-check'
+import Styles from './input-styles.scss'
+import { t } from 'i18next'
+import { type InputProps } from '@/domain/props/InputProps'
 
-type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+const Input: React.FC<InputProps> = (props: InputProps) => {
+  const errormessage = props.errormessage ?? t('error-msg-mandatory-field') ?? ''
 
-const Input: React.FC<Props> = (props: Props) => {
   return (
     <div className={Styles['input-container']}>
       <input {...props} />
-      <span className={Styles['input-status']}><FaCircleCheck width="1.5rem" /></span>
+      <span
+        className={Styles['input-status']}
+        title={errormessage}>
+        <FaCircleCheck width="1.5rem" />
+      </span>
     </div>
   )
 }

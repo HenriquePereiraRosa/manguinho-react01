@@ -7,13 +7,17 @@ import {
   Input
 } from '@/presentation/components'
 import { FormContext } from '@/presentation/contexts'
-import { type StateProps } from '@/presentation/contexts/form-context/form-context'
+import { useTranslation } from 'react-i18next'
 
 const Login: React.FC = () => {
-  const [formState] = useState<StateProps>({
+  const { t } = useTranslation()
+  const [formState] = useState({
     isLoading: false,
     errorMessage: ''
   })
+
+  const placeholderEmail = t('email-place-holder') || ''
+  const placeholderPwd = t('pwd-place-holder') || ''
 
   return (
     <div className={Styles.login}>
@@ -21,17 +25,23 @@ const Login: React.FC = () => {
 
       <FormContext.Provider value={formState} >
         <form className={Styles.form}>
-          <h2>Login</h2>
+          <h2>{t('login-title')}</h2>
 
-          <Input type="email" name="email" placeholder="Digite seu e-mail" />
-          <Input type="password" name="password" placeholder="Digite sua senha" />
+          <Input
+            type="email"
+            name="email"
+            placeholder={placeholderEmail}/>
+          <Input
+            type="password"
+            name="password"
+            placeholder={placeholderPwd}/>
 
           <button
             className={Styles['button-submit']}
             type="submit"
-            disabled>Entrar</button>
+            disabled>{t('enter')}</button>
 
-          <span className={Styles.link}>Criar conta</span>
+          <span className={Styles.link}>{t('subscribe')}</span>
 
           <FormLoginStatus />
 

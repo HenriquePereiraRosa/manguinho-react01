@@ -18,3 +18,11 @@ input[type="text"] {
   border: none;
   outline: none;
 }
+
+button {
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

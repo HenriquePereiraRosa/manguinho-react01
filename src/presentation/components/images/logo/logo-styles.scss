@@ -1,5 +1,7 @@
+@import "./../../../../presentation/styles/global-colors.scss";
+
 .img {
   width: 5rem;
-  border-radius: 1.5rem;
-  border-width: 0rem;
+  border-radius: 3rem;
+  border: 0.2rem solid $black;
 }
