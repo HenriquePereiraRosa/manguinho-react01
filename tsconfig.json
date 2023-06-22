@@ -33,7 +33,7 @@
     "src",
     "tests",
     "jest.config.js",
-    "webpack.config.js"
+    "webpack.common.js"
   ],
   "exclude": ["tests/e2e/cypress"]
 }
