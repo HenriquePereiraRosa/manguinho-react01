@@ -110,3 +110,4 @@ public
 
 #config files
 .json
+webpack.*.js
