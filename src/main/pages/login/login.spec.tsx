@@ -22,7 +22,7 @@ describe('Login Component', () => {
     const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
     const inputEmail = container.querySelector('input[name="email"]') as InputProps
     const inputPassword = container.querySelector('input[name="password"]') as InputProps
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status'))
+    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
     const faCheckDiv1 = inputStatuses[1].querySelector('.fa-check')
 
