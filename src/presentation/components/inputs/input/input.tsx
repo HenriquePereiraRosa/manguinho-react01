@@ -5,7 +5,7 @@ import { t } from 'i18next'
 import { type InputProps } from '@/domain/props/InputProps'
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
-  const errormessage = props.errormessage ?? t('error-msg-mandatory-field') ?? ''
+  const errormessage = props['error-message'] ?? t('error-msg-mandatory-field') ?? ''
 
   return (
     <div className={Styles['input-container']}>
@@ -13,7 +13,10 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
       <span
         className={Styles['input-status']}
         title={errormessage}>
-        <FaCircleCheck width="1.5rem" />
+        <div className={Styles['fa-check']}>
+          <FaCircleCheck width="1.5rem" />
+          {/* todo render this dinamically */}
+        </div>
       </span>
     </div>
   )
