@@ -24,7 +24,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './template.dev.html' //todo: cvreate a prod template
+      template: './template.dev.html' //todo: create a prod template
     })
   ]
 })

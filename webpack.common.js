@@ -14,13 +14,13 @@ module.exports = {
     alias: { '@': path.join(__dirname, 'src') }
   },
   plugins: [new CleanWebpackPlugin(),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'public',
-          to: 'public',
-        }
-      ]
-    })
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: 'public',
+        to: 'public',
+      }
+    ]
+  })
   ],
 }
