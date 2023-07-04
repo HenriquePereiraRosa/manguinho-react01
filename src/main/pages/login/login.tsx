@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { type ChangeEvent, useState } from 'react'
 import Styles from './login-styles.scss'
 import {
   Footer,
@@ -8,8 +8,13 @@ import {
 } from '@/presentation/components'
 import { FormContext } from '@/presentation/contexts'
 import { useTranslation } from 'react-i18next'
+import { type Validation } from '@/data/protocols/validation/validation'
 
-const Login: React.FC = () => {
+type Props = {
+  validation: Validation
+}
+
+const Login: React.FC<Props> = ({ validation }: Props) => {
   const { t } = useTranslation()
   const [formState] = useState({
     isLoading: false,
@@ -18,6 +23,14 @@ const Login: React.FC = () => {
 
   const placeholderEmail = t('email-place-holder') || ''
   const placeholderPwd = t('pwd-place-holder') || ''
+
+  const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    validation.validate('email', event.target.value)
+  }
+
+  const handlePwdOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    validation.validate('password', event.target.value)
+  }
 
   return (
     <div className={Styles.login}>
@@ -30,11 +43,14 @@ const Login: React.FC = () => {
           <Input
             type="email"
             name="email"
-            placeholder={placeholderEmail}/>
+            placeholder={placeholderEmail}
+            onChange={handleEmailOnChange} />
+
           <Input
             type="password"
             name="password"
-            placeholder={placeholderPwd}/>
+            placeholder={placeholderPwd}
+            onChange={handlePwdOnChange} />
 
           <button
             className={Styles['button-submit']}

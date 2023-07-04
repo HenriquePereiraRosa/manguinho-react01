@@ -1,21 +1,28 @@
 import React from 'react'
-import { type RenderResult, render } from '@testing-library/react'
+import { type RenderResult, render, cleanup, fireEvent } from '@testing-library/react'
 import Login from './login'
 import { t } from 'i18next'
 import { type InputProps } from '@/domain/props/InputProps'
+import faker from '@faker-js/faker'
+import { ValidationSpy } from '@/domain/test/mock-validation'
 
 type SutTypes = {
   sut: RenderResult
   container: HTMLElement | Element
+  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
-  const sut = render(<Login />)
+  const validationSpy = new ValidationSpy()
+  const sut = render(<Login validation={validationSpy}/>)
   const { container } = sut
-  return { sut, container }
+
+  return { sut, container, validationSpy }
 }
 
 describe('Login Component', () => {
+  afterEach(cleanup)
+
   test('Should not render FormStatus on start', () => {
     const { container } = makeSut()
     const errorContainer = container.querySelector('.error-container')
@@ -35,5 +42,31 @@ describe('Login Component', () => {
 
     expect(faCheckDiv0).not.toBeNull()
     expect(faCheckDiv1).not.toBeNull()
+  })
+
+  test('Should call Validation with correct email value', () => {
+    const { container, validationSpy } = makeSut()
+
+    const emailStub = faker.internet.email()
+
+    const inputEmail = container.querySelector('input[name="email"]') as HTMLElement
+
+    fireEvent.input(inputEmail, { target: { value: emailStub } })
+
+    expect(validationSpy.name).toBe('email')
+    expect(validationSpy.value).toBe(emailStub)
+  })
+
+  test('Should call Validation with correct password value', () => {
+    const { container, validationSpy } = makeSut()
+
+    const pwdStub = faker.internet.password()
+
+    const inputPassword = container.querySelector('input[name="password"]') as HTMLElement
+
+    fireEvent.input(inputPassword, { target: { value: pwdStub } })
+
+    expect(validationSpy.name).toBe('password')
+    expect(validationSpy.value).toBe(pwdStub)
   })
 })

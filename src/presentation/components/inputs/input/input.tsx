@@ -9,7 +9,8 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
 
   return (
     <div className={Styles['input-container']}>
-      <input {...props} />
+      <input {...props}
+        onChange={props.onChange} />
       <span
         className={Styles['input-status']}
         title={errormessage}>
