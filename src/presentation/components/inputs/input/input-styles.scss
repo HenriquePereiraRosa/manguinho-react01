@@ -13,6 +13,7 @@ input {
 
 .input-container {
   margin-top: 1rem;
+  position: relative;
   display: flex;
   flex-direction: row;
 
@@ -22,9 +23,9 @@ input {
 }
 
 .input-status {
-  position: relative;
+  position: absolute;
   top: 0.1rem;
-  right: 2rem;
+  right: 0.5rem;
   cursor: help;
 }
 

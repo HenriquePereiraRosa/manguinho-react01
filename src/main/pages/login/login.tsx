@@ -24,12 +24,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   const placeholderEmail = t('email-place-holder') || ''
   const placeholderPwd = t('pwd-place-holder') || ''
 
+  const [emailError, setEmailError] = useState<string>()
+  const [pwdError, setPwdError] = useState<string>()
+
   const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    validation.validate('email', event.target.value)
+    setEmailError(validation.validate('email', event.target.value))
   }
 
   const handlePwdOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    validation.validate('password', event.target.value)
+    setPwdError(validation.validate('password', event.target.value))
   }
 
   return (
@@ -44,13 +47,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             type="email"
             name="email"
             placeholder={placeholderEmail}
-            onChange={handleEmailOnChange} />
+            onChange={handleEmailOnChange}
+            error-message={emailError} />
 
           <Input
             type="password"
             name="password"
             placeholder={placeholderPwd}
-            onChange={handlePwdOnChange} />
+            onChange={handlePwdOnChange}
+            error-message={pwdError} />
 
           <button
             className={Styles['button-submit']}
