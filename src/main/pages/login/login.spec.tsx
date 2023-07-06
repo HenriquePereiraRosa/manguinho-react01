@@ -1,5 +1,5 @@
 import React from 'react'
-import { type RenderResult, render, cleanup, fireEvent } from '@testing-library/react'
+import { type RenderResult, render, cleanup, fireEvent, act } from '@testing-library/react'
 import Login from './login'
 // import { t } from 'i18next'
 import { type InputProps } from '@/domain/props/InputProps'
@@ -14,7 +14,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = render(<Login validation={validationSpy}/>)
+  const sut = render(<Login validation={validationSpy} />)
   const { container } = sut
 
   return { sut, container, validationSpy }
@@ -106,5 +106,24 @@ describe('Login Component', () => {
     expect(validationSpy.value).toBe(pwdStub)
     // expect(inputStatuses[1].title).toBe(t('error-msg-mandatory-field'))
     // expect(faCheckDiv01.not.toBeNull()
+  })
+
+  test('Should enable Submit button if form is valid', async () => {
+    const { container, validationSpy } = makeSut()
+    validationSpy.errorMessage = ''
+
+    const emailStub = faker.internet.email()
+    const pwdStub = faker.internet.password()
+
+    act(() => {
+      const inputEmail = container.querySelector('input[name="email"]') as HTMLElement
+      const inputPassword = container.querySelector('input[name="password"]') as HTMLElement
+
+      fireEvent.input(inputEmail, { target: { value: emailStub } })
+      fireEvent.input(inputPassword, { target: { value: pwdStub } })
+    })
+
+    const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+    expect(btnSubmit.disabled).toBe(false)
   })
 })

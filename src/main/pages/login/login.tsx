@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, useState } from 'react'
+import React, { type ChangeEvent, useState, useEffect } from 'react'
 import Styles from './login-styles.scss'
 import {
   Footer,
@@ -9,6 +9,7 @@ import {
 import { FormContext } from '@/presentation/contexts'
 import { useTranslation } from 'react-i18next'
 import { type Validation } from '@/data/protocols/validation/validation'
+import { isEmpty } from '@/domain/util/string'
 
 type Props = {
   validation: Validation
@@ -24,18 +25,43 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   const placeholderEmail = t('email-place-holder') || ''
   const placeholderPwd = t('pwd-place-holder') || ''
 
-  const [emailError, setEmailError] = useState<string>()
-  const [pwdError, setPwdError] = useState<string>()
+  const [email, setEmail] = useState<string>('')
+  const [pwd, setPwd] = useState<string>('')
+  const [emailError, setEmailError] = useState<string>('')
+  const [pwdError, setPwdError] = useState<string>('')
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+
+  useEffect(() => {
+    updateBtnStatus()
+  }, [email, pwd])
 
   const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setEmailError(validation.validate('email', event.target.value))
+    const value = event.target.value
+    setEmailError(validation.validate('email', value))
+    setEmail(value)
   }
 
   const handlePwdOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setPwdError(validation.validate('password', event.target.value))
+    const value = event.target.value
+    setPwdError(validation.validate('password', value))
+    setPwd(value)
+  }
+
+  const updateBtnStatus = (): void => {
+    if (!isEmpty(email) &&
+      !isEmpty(pwd) &&
+      isEmpty(emailError) &&
+      isEmpty(pwdError)) {
+      setBtnDisabled(true)
+      console.log('::-> emailError, pwdError : ', emailError, pwdError)
+      return
+    }
+
+    setBtnDisabled(false)
   }
 
   return (
+
     <div className={Styles.login}>
       <HeaderLogin />
 
@@ -48,6 +74,7 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             name="email"
             placeholder={placeholderEmail}
             onChange={handleEmailOnChange}
+            value={email}
             error-message={emailError} />
 
           <Input
@@ -55,12 +82,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             name="password"
             placeholder={placeholderPwd}
             onChange={handlePwdOnChange}
+            value={pwd}
             error-message={pwdError} />
 
           <button
             className={Styles['button-submit']}
             type="submit"
-            disabled>{t('enter')}</button>
+            disabled={!btnDisabled} >
+            {t('enter')}
+          </button>
 
           <span className={Styles.link}>{t('subscribe')}</span>
 
