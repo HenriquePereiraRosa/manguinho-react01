@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface FaCircleErrorProps {
-  width?: string
+  width: string
+  path?: React.SVGProps<SVGPathElement>
 }
 
 const FaCircleError: React.FC<FaCircleErrorProps> = (props) => {

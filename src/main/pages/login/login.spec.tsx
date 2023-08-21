@@ -27,8 +27,8 @@ describe('Login Component', () => {
     const { container } = makeSut()
     const errorContainer = container.querySelector('.error-container')
     const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
-    const inputEmail = container.querySelector('input[name="email"]') as InputProps
-    const inputPassword = container.querySelector('input[name="password"]') as InputProps
+    const inputEmail = container.querySelector('input[type="email"]') as InputProps
+    const inputPassword = container.querySelector('input[type="password"]') as InputProps
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
 
     expect(errorContainer?.childElementCount).toBe(0)
@@ -43,36 +43,38 @@ describe('Login Component', () => {
 
     const emailStub = faker.internet.email()
 
-    const inputEmail = container.querySelector('input[name="email"]') as HTMLElement
-    // const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-    // const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
-    // const faCheckDiv1 = inputStatuses[1].querySelector('.fa-check')
+    const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
 
     fireEvent.input(inputEmail, { target: { value: emailStub } })
 
-    expect(validationSpy.name).toBe('email')
-    expect(validationSpy.value).toBe(emailStub)
-    // expect(inputStatuses.length).toBe(0)
+    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
+    const faCheckDiv1 = inputStatuses[1]
 
-    // expect(faCheckDiv0).not.toBeNull()
-    // expect(faCheckDiv1).not.toBeNull()
+    expect(validationSpy.type).toBe('email')
+    expect(validationSpy.value).toBe(emailStub)
+    expect(inputStatuses.length).toBeGreaterThan(0)
+
+    expect(faCheckDiv0).not.toBeNull()
+    expect(faCheckDiv1).toBeUndefined()
   })
 
   test('Should show email error message if Email Validation fails', () => {
     const { container, validationSpy } = makeSut()
 
-    const emailStub = faker.internet.email()
+    const emailStub = 'invalid_email'// faker.internet.email()
 
-    const inputEmail = container.querySelector('input[name="email"]') as HTMLElement
-    // const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-    // const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
+    const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
 
     fireEvent.input(inputEmail, { target: { value: emailStub } })
 
-    expect(validationSpy.name).toBe('email')
+    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check') // todo: fix this
+
+    expect(validationSpy.type).toBe('email')
     expect(validationSpy.value).toBe(emailStub)
-    // expect(inputStatuses[0].title).toBe(t('error-msg-mandatory-field'))
-    // expect(faCheckDiv0).not.toBeNull()
+    // expect(inputStatuses[0].title).toBe(t('error-msg-mandatory-field')) // todo: fix this
+    expect(faCheckDiv0).not.toBeNull() // todo: fix this
   })
 
   test('Should call Validation with correct password value', () => {
@@ -80,13 +82,14 @@ describe('Login Component', () => {
 
     const pwdStub = faker.internet.password()
 
-    const inputPassword = container.querySelector('input[name="password"]') as HTMLElement
-    // const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-    // const faCheckDiv1 = inputStatuses[1].querySelector('.fa-check')
+    const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
 
     fireEvent.input(inputPassword, { target: { value: pwdStub } })
 
-    expect(validationSpy.name).toBe('password')
+    // const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    // const faCheckDiv1 = inputStatuses[1].querySelector('.fa-check')
+
+    expect(validationSpy.type).toBe('password')
     expect(validationSpy.value).toBe(pwdStub)
     // expect(faCheckDiv1).not.toBeNull()
   })
@@ -96,13 +99,13 @@ describe('Login Component', () => {
 
     const pwdStub = faker.internet.password()
 
-    const inputPassword = container.querySelector('input[name="password"]') as HTMLElement
+    const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
     // const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     // const faCheckDiv1 = inputStatuses[1].querySelector('.fa-check')
 
     fireEvent.input(inputPassword, { target: { value: pwdStub } })
 
-    expect(validationSpy.name).toBe('password')
+    expect(validationSpy.type).toBe('password')
     expect(validationSpy.value).toBe(pwdStub)
     // expect(inputStatuses[1].title).toBe(t('error-msg-mandatory-field'))
     // expect(faCheckDiv01.not.toBeNull()
@@ -116,8 +119,8 @@ describe('Login Component', () => {
     const pwdStub = faker.internet.password()
 
     act(() => {
-      const inputEmail = container.querySelector('input[name="email"]') as HTMLElement
-      const inputPassword = container.querySelector('input[name="password"]') as HTMLElement
+      const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
+      const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
 
       fireEvent.input(inputEmail, { target: { value: emailStub } })
       fireEvent.input(inputPassword, { target: { value: pwdStub } })

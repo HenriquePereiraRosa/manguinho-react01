@@ -1,7 +1,7 @@
 export { default as HeaderLogin } from './headers/header-login/header-login'
 export { default as FormLoginStatus } from './form/form-login-status/form-login-status'
 export { default as Footer } from './footer/footer'
-export { default as Input } from './inputs/input/input'
+export { default as InputRoot } from './inputs/input/input-root'
 export { default as Logo } from './images/logo/logo'
 export { default as Spinner } from './footer/footer'
 export { default as Router } from './router/router'

@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface FaCircleCheckProps {
-  width?: string
+  width: string
+  path?: React.SVGProps<SVGPathElement>
 }
 
 const FaCircleCheck: React.FC<FaCircleCheckProps> = (props) => {

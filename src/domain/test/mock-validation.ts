@@ -2,11 +2,11 @@ import { type Validation } from '@/data/protocols/validation/validation'
 
 export class ValidationSpy implements Validation {
   errorMessage: string
-  name: string
+  type: string
   value: string
 
-  validate (name: string, value: string): string {
-    this.name = name
+  validate (type: string, value: string): string {
+    this.type = type
     this.value = value
     return this.errorMessage
   }

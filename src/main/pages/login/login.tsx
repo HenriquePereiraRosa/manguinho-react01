@@ -4,7 +4,7 @@ import {
   Footer,
   FormLoginStatus,
   HeaderLogin,
-  Input
+  InputRoot
 } from '@/presentation/components'
 import { FormContext } from '@/presentation/contexts'
 import { useTranslation } from 'react-i18next'
@@ -69,17 +69,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
         <form className={Styles.form}>
           <h2>{t('login-title')}</h2>
 
-          <Input
+          <InputRoot
             type="email"
-            name="email"
             placeholder={placeholderEmail}
             onChange={handleEmailOnChange}
             value={email}
             error-message={emailError} />
 
-          <Input
+          <InputRoot
             type="password"
-            name="password"
             placeholder={placeholderPwd}
             onChange={handlePwdOnChange}
             value={pwd}
