@@ -1,6 +1,6 @@
 import { type Validation } from '@/data/protocols/validation/validation'
 
-export class ValidationSpy implements Validation {
+export class ValidationStub implements Validation {
   errorMessage: string
   type: string
   value: string

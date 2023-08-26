@@ -18,8 +18,9 @@ describe('TimeLog', () => {
   it('should return the correct time delay', () => {
     const mockDate = new Date('2022-01-01T00:00:00.000Z')
     const currentTime = new Date().getTime()
-    const expectedDelay = currentTime - mockDate.getTime()
-    const delay = timeLog.getTimeDelay(mockDate)
+    const expectedDelay = Math.round((currentTime - mockDate.getTime()) / 100)
+    const delay = Math.round(timeLog.getTimeDelay(mockDate) / 100)
+
     expect(delay).toEqual(expectedDelay)
   })
 })

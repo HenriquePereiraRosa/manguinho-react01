@@ -7,7 +7,7 @@ import {
 import Login from '@/main/pages/login/login'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '@/infra/i18n/i18n'
-import { ValidationSpy } from '@/domain/test/mock-validation'
+import { ValidationStub } from '@/domain/test/mock-validation'
 
 const Router: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const Router: React.FC = () => {
         <Routes>
 
           {/* todo: REMOVE ValidationSpy */}
-          <Route path="/login" element={<Login validation={new ValidationSpy()}/>} />
+          <Route path="/login" element={<Login validation={new ValidationStub()}/>} />
         </Routes>
       </I18nextProvider>,
     </BrowserRouter>

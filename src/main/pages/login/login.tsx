@@ -53,7 +53,6 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
       isEmpty(emailError) &&
       isEmpty(pwdError)) {
       setBtnDisabled(true)
-      console.log('::-> emailError, pwdError : ', emailError, pwdError)
       return
     }
 

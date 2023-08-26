@@ -9,7 +9,7 @@ const InputIcon: React.FC<InputProps> = (props: InputProps) => {
   return (
     <>
       {errormessage.trim() && (
-        <InputIconError />
+        <InputIconError error-message={errormessage} />
       )}
 
       {!errormessage.trim() && props.value && (
