@@ -138,6 +138,14 @@ describe('Login Component', () => {
       password: pwdStub
     })
   })
+
+  test('Should not be able to clicck btn Submit multiple times', async () => {
+    const { container, authenticationSpy } = makeSut()
+    doSubmit(container)
+    doSubmit(container)
+
+    expect(authenticationSpy.callsCount).toBe(1)
+  })
 })
 
 function doSubmit (container: HTMLElement): { emailStub: string, pwdStub: string } {

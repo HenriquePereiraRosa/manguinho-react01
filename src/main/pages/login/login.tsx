@@ -62,8 +62,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   }
 
   const handleSubmit = (): void => {
-    setFormState({ ...formState, isLoading: true })
+    if (formState.isLoading) return
 
+    setFormState({ ...formState, isLoading: true })
     authentication.exec({ email, password: pwd })
       .catch((error) => {
         // Handle the error if needed
