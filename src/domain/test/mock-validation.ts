@@ -1,6 +1,6 @@
-import { type Validation } from '@/data/protocols/validation/validation'
+import { type IValidation } from '@/data/protocols/validation/validation'
 
-export class ValidationStub implements Validation {
+export class ValidationStub implements IValidation {
   errorMessage: string
   type: string
   value: string

@@ -1,15 +1,22 @@
 import React from 'react'
-import { type RenderResult, render, cleanup, fireEvent, act } from '@testing-library/react'
+import {
+  type RenderResult,
+  render,
+  cleanup,
+  fireEvent
+} from '@testing-library/react'
 import Login from './login'
 import { t } from 'i18next'
 import { type InputProps } from '@/domain/props/InputProps'
 import faker from '@faker-js/faker'
 import { ValidationStub } from '@/domain/test/mock-validation'
+import { AuthenticationSpy } from '@/domain/test/mock-auth'
 
 type SutTypes = {
   sut: RenderResult
-  container: HTMLElement | Element
+  container: HTMLElement
   validationStub: ValidationStub
+  authenticationSpy: AuthenticationSpy
 }
 
 type SutParams = {
@@ -19,10 +26,12 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.errorMessage ?? ''
-  const sut = render(<Login validation={validationStub} />)
+
+  const authenticationSpy = new AuthenticationSpy()
+  const sut = render(<Login validation={validationStub} authentication={authenticationSpy} />)
   const { container } = sut
 
-  return { sut, container, validationStub }
+  return { sut, container, validationStub, authenticationSpy }
 }
 
 describe('Login Component', () => {
@@ -46,11 +55,7 @@ describe('Login Component', () => {
   test('Should call Validation with correct email value', () => {
     const { container, validationStub } = makeSut()
 
-    const emailStub = faker.internet.email()
-
-    const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
-
-    fireEvent.input(inputEmail, { target: { value: emailStub } })
+    const emailStub = populateEmail(container)
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
@@ -68,11 +73,7 @@ describe('Login Component', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, validationStub } = makeSut({ errorMessage })
 
-    const emailStub = 'invalid_email' // WRONG EMAIL
-
-    const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
-
-    fireEvent.input(inputEmail, { target: { value: emailStub } })
+    const emailStub = populateEmail(container)
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-error')
@@ -86,11 +87,7 @@ describe('Login Component', () => {
   test('Should call Validation with correct password value', () => {
     const { container, validationStub } = makeSut()
 
-    const pwdStub = faker.internet.password()
-
-    const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
-
-    fireEvent.input(inputPassword, { target: { value: pwdStub } })
+    const pwdStub = populatePwd(container)
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv1 = inputStatuses[0].querySelector('.fa-check')
@@ -104,11 +101,7 @@ describe('Login Component', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, validationStub } = makeSut({ errorMessage })
 
-    const pwdStub = ' '// WRONG PWD
-
-    const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
-
-    fireEvent.input(inputPassword, { target: { value: pwdStub } })
+    const pwdStub = populatePwd(container, ' ')
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faErrorDiv1 = inputStatuses[0].querySelector('.fa-error')
@@ -123,18 +116,54 @@ describe('Login Component', () => {
     const { container, validationStub } = makeSut()
     validationStub.errorMessage = ''
 
-    const emailStub = faker.internet.email()
-    const pwdStub = faker.internet.password()
-
-    act(() => {
-      const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
-      const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
-
-      fireEvent.input(inputEmail, { target: { value: emailStub } })
-      fireEvent.input(inputPassword, { target: { value: pwdStub } })
-    })
+    populateEmailAndPwd(container)
 
     const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
     expect(btnSubmit.disabled).toBe(false)
   })
+
+  test('Should show Spinner on submit', () => {
+    const { container } = makeSut()
+    doSubmit(container)
+    const spinner = container.querySelector('.loader') as HTMLButtonElement
+    expect(spinner).toBeTruthy()
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const { container, authenticationSpy } = makeSut()
+    const { emailStub, pwdStub } = doSubmit(container)
+
+    expect(authenticationSpy.params).toEqual({
+      email: emailStub,
+      password: pwdStub
+    })
+  })
 })
+
+function doSubmit (container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const { emailStub, pwdStub } = populateEmailAndPwd(container)
+  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+  fireEvent.click(btnSubmit)
+
+  return { emailStub, pwdStub }
+}
+
+function populateEmailAndPwd (container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const emailStub = populateEmail(container)
+  const pwdStub = populatePwd(container)
+  return { emailStub, pwdStub }
+}
+
+function populatePwd (container: HTMLElement, pPwd?: string): string {
+  const pwdStub = pPwd ?? faker.internet.password()
+  const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
+  fireEvent.input(inputPassword, { target: { value: pwdStub } })
+  return pwdStub
+}
+
+function populateEmail (container: HTMLElement, pEmail?: string): string {
+  const emailStub = pEmail ?? faker.internet.email()
+  const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
+  fireEvent.input(inputEmail, { target: { value: emailStub } })
+  return emailStub
+}

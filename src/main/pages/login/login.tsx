@@ -8,16 +8,18 @@ import {
 } from '@/presentation/components'
 import { FormContext } from '@/presentation/contexts'
 import { useTranslation } from 'react-i18next'
-import { type Validation } from '@/data/protocols/validation/validation'
+import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
+import { type IAuthentication } from '@/domain/feature/auth'
 
 type Props = {
-  validation: Validation
+  validation: IValidation
+  authentication: IAuthentication
 }
 
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const { t } = useTranslation()
-  const [formState] = useState({
+  const [formState, setFormState] = useState({
     isLoading: false,
     errorMessage: ''
   })
@@ -35,6 +37,18 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     updateBtnStatus()
   }, [email, pwd])
 
+  const updateBtnStatus = (): void => {
+    if (!isEmpty(email) &&
+      !isEmpty(pwd) &&
+      isEmpty(emailError) &&
+      isEmpty(pwdError)) {
+      setBtnDisabled(true)
+      return
+    }
+
+    setBtnDisabled(false)
+  }
+
   const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value
     setEmailError(validation.validate('email', value))
@@ -47,16 +61,14 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     setPwd(value)
   }
 
-  const updateBtnStatus = (): void => {
-    if (!isEmpty(email) &&
-      !isEmpty(pwd) &&
-      isEmpty(emailError) &&
-      isEmpty(pwdError)) {
-      setBtnDisabled(true)
-      return
-    }
+  const handleSubmit = (): void => {
+    setFormState({ ...formState, isLoading: true })
 
-    setBtnDisabled(false)
+    authentication.exec({ email, password: pwd })
+      .catch((error) => {
+        // Handle the error if needed
+        console.log('todo: Handle Auth error', error)
+      })
   }
 
   return (
@@ -85,7 +97,8 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
           <button
             className={Styles['button-submit']}
             type="submit"
-            disabled={!btnDisabled} >
+            disabled={!btnDisabled}
+            onClick={handleSubmit} >
             {t('enter')}
           </button>
 
