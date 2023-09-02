@@ -3,7 +3,8 @@ import {
   type RenderResult,
   render,
   cleanup,
-  fireEvent
+  fireEvent,
+  waitFor
 } from '@testing-library/react'
 import Login from './login'
 import { t } from 'i18next'
@@ -11,6 +12,7 @@ import { type InputProps } from '@/domain/props/InputProps'
 import faker from '@faker-js/faker'
 import { ValidationStub } from '@/domain/test/mock-validation'
 import { AuthenticationSpy } from '@/domain/test/mock-auth'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 
 type SutTypes = {
   sut: RenderResult
@@ -146,9 +148,30 @@ describe('Login Component', () => {
 
     expect(authenticationSpy.callsCount).toBe(1)
   })
+
+  test('Should not call Authenticaton if form is invalid', () => {
+    const errorMessage = t('error-msg-mandatory-field')
+    const { container, authenticationSpy } = makeSut({ errorMessage })
+    doSubmit(container)
+
+    expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  test('[ TODO: FIX ] Should present error if Authenticaton fails', async () => {
+    const error = new InvalidCredentialsError()
+    const { container, authenticationSpy } = makeSut()
+    jest.spyOn(authenticationSpy, 'exec')
+      .mockReturnValueOnce(Promise.reject(error))
+    doSubmit(container)
+
+    await waitFor(async () => container.querySelector('.error-container') as HTMLElement)
+
+    const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+    expect(formLoginStatus.innerHTML).toContain(error.message)
+  })
 })
 
-function doSubmit (container: HTMLElement): { emailStub: string, pwdStub: string } {
+function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
   const { emailStub, pwdStub } = populateEmailAndPwd(container)
   const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
   fireEvent.click(btnSubmit)
@@ -156,20 +179,20 @@ function doSubmit (container: HTMLElement): { emailStub: string, pwdStub: string
   return { emailStub, pwdStub }
 }
 
-function populateEmailAndPwd (container: HTMLElement): { emailStub: string, pwdStub: string } {
+function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
   const emailStub = populateEmail(container)
   const pwdStub = populatePwd(container)
   return { emailStub, pwdStub }
 }
 
-function populatePwd (container: HTMLElement, pPwd?: string): string {
+function populatePwd(container: HTMLElement, pPwd?: string): string {
   const pwdStub = pPwd ?? faker.internet.password()
   const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
   fireEvent.input(inputPassword, { target: { value: pwdStub } })
   return pwdStub
 }
 
-function populateEmail (container: HTMLElement, pEmail?: string): string {
+function populateEmail(container: HTMLElement, pEmail?: string): string {
   const emailStub = pEmail ?? faker.internet.email()
   const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
   fireEvent.input(inputEmail, { target: { value: emailStub } })

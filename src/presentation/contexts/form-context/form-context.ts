@@ -1,6 +1,11 @@
 import { createContext } from 'react'
 
-const initialState: any = {
+type FormContextType = {
+  isLoading: boolean
+  errorMessage: string
+}
+
+const initialState: FormContextType = {
   isLoading: false,
   errorMessage: ''
 }

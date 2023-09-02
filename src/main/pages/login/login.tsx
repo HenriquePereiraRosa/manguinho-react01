@@ -64,11 +64,18 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const handleSubmit = (): void => {
     if (formState.isLoading) return
 
+    setBtnDisabled(true)
     setFormState({ ...formState, isLoading: true })
     authentication.exec({ email, password: pwd })
+      .then((account) => {
+        console.log('Auth.exec return: ', account)
+      })
       .catch((error) => {
-        // Handle the error if needed
-        console.log('todo: Handle Auth error', error)
+        setFormState({
+          isLoading: false,
+          errorMessage: error.message
+        })
+        setBtnDisabled(false)
       })
   }
 

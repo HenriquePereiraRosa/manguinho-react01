@@ -8,7 +8,7 @@ const FormLoginStatus: React.FC = () => {
 
   return (
     <div className={Styles['error-container']}>
-      {isLoading && <CircleSpinner className={Styles.error} />}
+      {isLoading && !errorMessage && <CircleSpinner className={Styles.error} />}
       {errorMessage && <span className={Styles.error}>{errorMessage}</span>}
     </div>
   )
