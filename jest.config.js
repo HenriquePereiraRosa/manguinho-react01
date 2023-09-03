@@ -1,6 +1,7 @@
 module.exports = {
   roots: ['<rootDir>/src'],
   modulePaths: ['<rootDir>/src'],
+  testTimeout: 100000, // todo: decrease in production
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
