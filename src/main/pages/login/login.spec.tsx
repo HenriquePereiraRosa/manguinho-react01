@@ -165,7 +165,7 @@ describe('Login Component', () => {
       .mockReturnValueOnce(Promise.reject(error))
     doSubmit(container)
 
-    await waitFor(async () => container.querySelector('.form'))
+    await waitFor(async () => container.querySelector('.error-container'))
 
     const formLoginStatus = container.querySelector('.error-container') as HTMLElement
     expect(formLoginStatus.innerHTML).toContain(error.message)
@@ -175,7 +175,7 @@ describe('Login Component', () => {
     const { container, authenticationSpy } = makeSut()
     doSubmit(container)
 
-    await waitFor(async () => container.querySelector('.error-container'))
+    await waitFor(async () => container.querySelector('.form'))
 
     expect(localStorage.setItem)
       .toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
