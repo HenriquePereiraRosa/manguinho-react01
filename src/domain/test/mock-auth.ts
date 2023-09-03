@@ -11,10 +11,11 @@ export const mockAuthParams = (): AuthenticationParams => ({
 export class AuthenticationSpy implements IAuthentication {
   params: AuthenticationParams
   callsCount: number = 0
+  account: AccountModel = mockAccountModel()
 
   async exec (params: AuthenticationParams): Promise<AccountModel> {
     this.params = params
     this.callsCount++
-    return Promise.resolve(mockAccountModel())
+    return Promise.resolve(this.account)
   }
 }

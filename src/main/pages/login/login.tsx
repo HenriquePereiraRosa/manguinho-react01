@@ -68,7 +68,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     setFormState({ ...formState, isLoading: true })
     authentication.exec({ email, password: pwd })
       .then((account) => {
-        console.log('Auth.exec return: ', account)
+        localStorage.setItem('accessToken', account.accessToken)
       })
       .catch((error) => {
         setFormState({

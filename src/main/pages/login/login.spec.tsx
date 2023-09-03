@@ -13,6 +13,7 @@ import faker from '@faker-js/faker'
 import { ValidationStub } from '@/domain/test/mock-validation'
 import { AuthenticationSpy } from '@/domain/test/mock-auth'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
+import 'jest-localstorage-mock'
 
 type SutTypes = {
   sut: RenderResult
@@ -157,17 +158,27 @@ describe('Login Component', () => {
     expect(authenticationSpy.callsCount).toBe(0)
   })
 
-  test('[ TODO: FIX ] Should present error if Authenticaton fails', async () => {
+  test('Should present error if Authenticaton fails', async () => {
     const error = new InvalidCredentialsError()
     const { container, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'exec')
       .mockReturnValueOnce(Promise.reject(error))
     doSubmit(container)
 
-    await waitFor(async () => container.querySelector('.error-container') as HTMLElement)
+    await waitFor(async () => container.querySelector('.form'))
 
     const formLoginStatus = container.querySelector('.error-container') as HTMLElement
     expect(formLoginStatus.innerHTML).toContain(error.message)
+  })
+
+  test('Should add "AccessToken" to local_storage on Auth sucess', async () => {
+    const { container, authenticationSpy } = makeSut()
+    doSubmit(container)
+
+    await waitFor(async () => container.querySelector('.error-container'))
+
+    expect(localStorage.setItem)
+      .toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
   })
 })
 

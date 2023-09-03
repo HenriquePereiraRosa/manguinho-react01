@@ -5637,6 +5637,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-localstorage-mock@npm:^2.4.26":
+  version: 2.4.26
+  resolution: "jest-localstorage-mock@npm:2.4.26"
+  checksum: d6871dd030f04bb59c9ef71ce22e98e15e2bc0d77755f5ed466839b891a7a7aae64b6cfc8f942cbef515981c4ff2ae26ad2ccc2f9d1b426c198d0b812ab1831f
+  languageName: node
+  linkType: hard
+
 "jest-matcher-utils@npm:^27.0.0, jest-matcher-utils@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-matcher-utils@npm:27.5.1"
@@ -6395,6 +6402,7 @@ __metadata:
     i18next: ^22.5.1
     identity-obj-proxy: ^3.0.0
     jest: ^27.5.1
+    jest-localstorage-mock: ^2.4.26
     lint-staged: ^12.3.7
     node-sass: ^8.0.0
     react: ^18.2.0
