@@ -22,6 +22,12 @@ const Router: React.FC = () => {
             element={<Login
               validation={new ValidationStub()}
               authentication={new AuthenticationSpy()} />} />
+
+          <Route
+            path="/signup"
+            element={<div style={{ color: '#fafafa' }}>SIGNUP (TODO)</div>}
+          />
+
         </Routes>
       </I18nextProvider>,
     </BrowserRouter>

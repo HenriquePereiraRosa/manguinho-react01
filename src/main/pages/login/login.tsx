@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { type IAuthentication } from '@/domain/feature/auth'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: IValidation
@@ -23,6 +24,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     isLoading: false,
     errorMessage: ''
   })
+
+  const navigate = useNavigate()
+  const signUpUrl: string = '/signup'
 
   const placeholderEmail = t('email-place-holder') || ''
   const placeholderPwd = t('pwd-place-holder') || ''
@@ -79,6 +83,10 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       })
   }
 
+  const goToSignUp = (): void => {
+    navigate(signUpUrl)
+  }
+
   return (
 
     <div className={Styles.login}>
@@ -110,7 +118,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             {t('enter')}
           </button>
 
-          <span className={Styles.link}>{t('subscribe')}</span>
+          <Link
+            className={Styles.signup}
+            to={signUpUrl}
+            onClick={goToSignUp}>
+            {t('signup')}
+          </Link>
 
           <FormLoginStatus />
 

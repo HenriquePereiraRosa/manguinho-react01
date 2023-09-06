@@ -14,6 +14,7 @@ import { ValidationStub } from '@/domain/test/mock-validation'
 import { AuthenticationSpy } from '@/domain/test/mock-auth'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import 'jest-localstorage-mock'
+import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
   sut: RenderResult
@@ -26,15 +27,30 @@ type SutParams = {
   errorMessage: string
 }
 
+const mockedUsedNavigate = jest.fn()
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate
+}))
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.errorMessage ?? ''
 
   const authenticationSpy = new AuthenticationSpy()
-  const sut = render(<Login validation={validationStub} authentication={authenticationSpy} />)
+  const sut = render(
+    <BrowserRouter>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </BrowserRouter >
+  )
   const { container } = sut
 
-  return { sut, container, validationStub, authenticationSpy }
+  return {
+    sut,
+    container,
+    validationStub,
+    authenticationSpy
+  }
 }
 
 describe('Login Component', () => {
@@ -179,6 +195,15 @@ describe('Login Component', () => {
 
     expect(localStorage.setItem)
       .toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    // expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
+  })
+
+  test('Should go to Signup page', async () => {
+    const { container } = makeSut()
+    const signupLink = container.querySelector('.signup') as HTMLElement
+
+    fireEvent.click(signupLink)
+    expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
   })
 })
 

@@ -1,7 +1,7 @@
 {
   "login-title": "Login",
   "enter": "Enter",
-  "subscribe": "Subscribe",
+  "signup": "Sign up",
   "error-msg-mandatory-field": "Mandatory Field",
   "email-place-holder": "Type your email",
   "pwd-place-holder": "Type your password"

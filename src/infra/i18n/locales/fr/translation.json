@@ -1,7 +1,7 @@
 {
   "login-title": "Connexion",
   "enter": "Entrer",
-  "subscribe": "Créer un compte",
+  "signup": "Créer un compte",
   "email-place-holder": "Tapez votre e-mail",
   "pwd-place-holder": "Tapez votre mot de passe"
 }
