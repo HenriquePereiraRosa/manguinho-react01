@@ -26,6 +26,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   })
 
   const navigate = useNavigate()
+  const mainPageUrl: string = '/'
   const signUpUrl: string = '/signup'
 
   const placeholderEmail = t('email-place-holder') || ''
@@ -73,6 +74,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     authentication.exec({ email, password: pwd })
       .then((account) => {
         localStorage.setItem('accessToken', account.accessToken)
+        navigate(mainPageUrl)
       })
       .catch((error) => {
         setFormState({

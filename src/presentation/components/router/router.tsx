@@ -18,6 +18,11 @@ const Router: React.FC = () => {
 
           {/* todo: REMOVE Spys and Stubs */}
           <Route
+            path="/"
+            element={<div style={{ color: '#fafafa' }}>MAIN PAGE (TODO)</div>}
+          />
+
+          <Route
             path="/login"
             element={<Login
               validation={new ValidationStub()}

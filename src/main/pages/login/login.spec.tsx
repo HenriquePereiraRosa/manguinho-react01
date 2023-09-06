@@ -195,7 +195,7 @@ describe('Login Component', () => {
 
     expect(localStorage.setItem)
       .toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
-    // expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
+    expect(location.pathname).toBe('/')
   })
 
   test('Should go to Signup page', async () => {
