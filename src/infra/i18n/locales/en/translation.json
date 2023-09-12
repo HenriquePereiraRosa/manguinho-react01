@@ -2,7 +2,9 @@
   "login-title": "Login",
   "enter": "Enter",
   "signup": "Sign up",
-  "error-msg-mandatory-field": "Mandatory Field",
   "email-place-holder": "Type your email",
-  "pwd-place-holder": "Type your password"
+  "pwd-place-holder": "Type your password",
+  "error-msg-mandatory-field": "Mandatory Field",
+  "error-msg-max-legth": "Field should be less than ",
+  "error-msg-min-legth": "Field should be greater than "
 }
