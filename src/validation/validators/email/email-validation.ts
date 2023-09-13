@@ -8,6 +8,10 @@ export class EmailValidation implements IFieldValidation {
       return null
     }
 
+    if (!value) {
+      return null
+    }
+
     return new InvalidFieldError()
   }
 }
