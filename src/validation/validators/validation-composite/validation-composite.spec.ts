@@ -39,7 +39,7 @@ describe('RequiredFieldValidation', () => {
     const { sut, fieldValidationSpies } = makeSut(fieldNames)
     fieldValidationSpies[0].error = error
 
-    const errorSut = sut.validate(fieldNames[0], 'any_value')
+    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
 
     expect(errorSut).toBe(error.message)
   })
@@ -53,7 +53,7 @@ describe('RequiredFieldValidation', () => {
     fieldValidationSpies[0].error = lError01
     fieldValidationSpies[1].error = lError02
 
-    const errorSut = sut.validate(fieldNames[0], 'any_value')
+    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
 
     expect(errorSut).toBe(lError01.message)
   })
@@ -63,7 +63,7 @@ describe('RequiredFieldValidation', () => {
     const fieldNames = [fieldName, fieldName]
     const { sut } = makeSut(fieldNames)
 
-    const errorSut = sut.validate(fieldNames[0], 'any_value')
+    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
 
     expect(errorSut).toBeFalsy()
   })
