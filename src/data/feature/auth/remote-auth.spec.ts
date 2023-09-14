@@ -31,7 +31,7 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
-    const promise = sut.auth(mockAuthParams())
+    const promise = sut.doAuth(mockAuthParams())
     expect(promise).rejects.toThrow(new InvalidParametersError())
   })
 
@@ -40,7 +40,7 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
     }
-    const promise = sut.auth(mockAuthParams())
+    const promise = sut.doAuth(mockAuthParams())
     expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
@@ -49,7 +49,7 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
-    const promise = sut.auth(mockAuthParams())
+    const promise = sut.doAuth(mockAuthParams())
     expect(promise).rejects.toThrow(new NotFoundError())
   })
 
@@ -58,13 +58,13 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.internalError
     }
-    const promise = sut.auth(mockAuthParams())
+    const promise = sut.doAuth(mockAuthParams())
     expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
   it('Should throw UnexpectedError for unexpected returns', async () => {
     const { sut } = makeSut()
-    const promise = sut.auth(mockAuthParams())
+    const promise = sut.doAuth(mockAuthParams())
     expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -74,7 +74,7 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.ok
     }
-    await sut.auth()
+    await sut.doAuth()
     expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
     expect(postClientSpy.url).toBe(url)
   })
@@ -85,7 +85,7 @@ describe('RemoteAuth', () => {
     postClientSpy.response = {
       statusCode: HttpStatusCode.ok
     }
-    await sut.auth(authParams)
+    await sut.doAuth(authParams)
     expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
     expect(postClientSpy.body).toEqual(authParams)
   })
@@ -97,7 +97,7 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.ok,
       body: result
     }
-    const account = await sut.auth(mockAuthParams())
+    const account = await sut.doAuth(mockAuthParams())
     expect(account).toBe(result)
   })
 })

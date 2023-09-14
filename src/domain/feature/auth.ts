@@ -6,5 +6,5 @@ export type AuthenticationParams = {
 }
 
 export interface IAuthentication {
-  exec: (param: AuthenticationParams) => Promise<AccountModel>
+  doAuth: (param: AuthenticationParams) => Promise<AccountModel | undefined>
 }

@@ -9,7 +9,7 @@ type SutTypes = {
 class FieldValidationSpy implements IFieldValidation {
   public error: Error
 
-  constructor(readonly field: string) { }
+  constructor(readonly fieldName: string) { }
 
   validate(value: string): Error {
     return this.error

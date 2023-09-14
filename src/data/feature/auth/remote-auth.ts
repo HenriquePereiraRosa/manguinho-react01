@@ -3,16 +3,16 @@ import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-err
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { type AuthenticationParams } from '@/domain/feature/auth'
+import { type IAuthentication, type AuthenticationParams } from '@/domain/feature/auth'
 import { type AccountModel } from '@/domain/model/account-model'
 
-export class RemoteAuth {
+export class RemoteAuth implements IAuthentication {
   constructor (
     private readonly url: string,
     private readonly postClient: PostClient<AuthenticationParams, AccountModel>
   ) { }
 
-  async auth (params?: AuthenticationParams): Promise<AccountModel | undefined> {
+  async doAuth (params?: AuthenticationParams): Promise<AccountModel | undefined> {
     const res = await this.postClient.post({
       url: this.url,
       body: params

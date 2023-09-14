@@ -13,7 +13,7 @@ export class AuthenticationSpy implements IAuthentication {
   callsCount: number = 0
   account: AccountModel = mockAccountModel()
 
-  async exec (params: AuthenticationParams): Promise<AccountModel> {
+  async doAuth (params: AuthenticationParams): Promise<AccountModel> {
     this.params = params
     this.callsCount++
     return Promise.resolve(this.account)

@@ -3,7 +3,7 @@ import type { IFieldValidation } from '../../protocols/field-validation'
 
 export class MinLengthValidation implements IFieldValidation {
   constructor(
-    readonly field: string,
+    readonly fieldName: string,
     private readonly minLength: number) { }
 
   validate(value: string): Error | null {

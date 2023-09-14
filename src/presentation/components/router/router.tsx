@@ -4,7 +4,7 @@ import {
   Route,
   Routes
 } from 'react-router-dom'
-import Login from '@/main/pages/login/login'
+import Login from '@/presentation/pages/login/login'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '@/infra/i18n/i18n'
 import { ValidationStub } from '@/domain/test/mock-validation'

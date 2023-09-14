@@ -12,6 +12,7 @@ import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { type IAuthentication } from '@/domain/feature/auth'
 import { Link, useNavigate } from 'react-router-dom'
+import { UnexpectedError } from '@/domain/errors/unexpected-error'
 
 type Props = {
   validation: IValidation
@@ -71,10 +72,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
     setBtnDisabled(true)
     setFormState({ ...formState, isLoading: true })
-    authentication.exec({ email, password: pwd })
+    authentication.doAuth({ email, password: pwd })
       .then((account) => {
-        localStorage.setItem('accessToken', account.accessToken)
-        navigate(mainPageUrl)
+        if (account) {
+          localStorage.setItem('accessToken', account.accessToken)
+          navigate(mainPageUrl)
+        } else throw new UnexpectedError() // todo: add a personalized error here
       })
       .catch((error) => {
         setFormState({
