@@ -70,8 +70,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const handleSubmit = (): void => {
     if (formState.isLoading) return
 
-    setBtnDisabled(true)
     setFormState({ ...formState, isLoading: true })
+    setBtnDisabled(true)
+
     authentication.doAuth({ email, password: pwd })
       .then((account) => {
         if (account) {

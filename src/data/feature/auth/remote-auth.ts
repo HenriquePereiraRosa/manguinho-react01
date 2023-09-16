@@ -7,12 +7,12 @@ import { type IAuthentication, type AuthenticationParams } from '@/domain/featur
 import { type AccountModel } from '@/domain/model/account-model'
 
 export class RemoteAuth implements IAuthentication {
-  constructor (
+  constructor(
     private readonly url: string,
     private readonly postClient: PostClient<AuthenticationParams, AccountModel>
   ) { }
 
-  async doAuth (params?: AuthenticationParams): Promise<AccountModel | undefined> {
+  async doAuth(params?: AuthenticationParams): Promise<AccountModel | undefined> {
     const res = await this.postClient.post({
       url: this.url,
       body: params

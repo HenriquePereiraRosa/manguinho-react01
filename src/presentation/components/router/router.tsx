@@ -4,11 +4,11 @@ import {
   Route,
   Routes
 } from 'react-router-dom'
-import Login from '@/presentation/pages/login/login'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '@/infra/i18n/i18n'
-import { ValidationStub } from '@/domain/test/mock-validation'
-import { AuthenticationSpy } from '@/domain/test/mock-auth'
+import Main from '@/presentation/pages/main/main'
+import SignUp from '@/presentation/pages/signup/signup'
+import { makeLogin } from '@/main/factories/pages/login/login-factory'
 
 const Router: React.FC = () => {
   return (
@@ -16,21 +16,19 @@ const Router: React.FC = () => {
       <I18nextProvider i18n={i18n}>
         <Routes>
 
-          {/* todo: REMOVE Spys and Stubs */}
           <Route
             path="/"
-            element={<div style={{ color: '#fafafa' }}>MAIN PAGE (TODO)</div>}
+            element={<Main />}
           />
 
           <Route
             path="/login"
-            element={<Login
-              validation={new ValidationStub()}
-              authentication={new AuthenticationSpy()} />} />
+            Component={makeLogin}
+          />
 
           <Route
             path="/signup"
-            element={<div style={{ color: '#fafafa' }}>SIGNUP (TODO)</div>}
+            element={<SignUp />}
           />
 
         </Routes>

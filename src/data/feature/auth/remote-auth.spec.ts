@@ -32,7 +32,7 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.badRequest
     }
     const promise = sut.doAuth(mockAuthParams())
-    expect(promise).rejects.toThrow(new InvalidParametersError())
+    await expect(promise).rejects.toThrow(new InvalidParametersError())
   })
 
   it('Should throw InvalidCredentialsError if PostClient returns 401', async () => {
@@ -41,7 +41,7 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.unauthorized
     }
     const promise = sut.doAuth(mockAuthParams())
-    expect(promise).rejects.toThrow(new InvalidCredentialsError())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   it('Should throw NotFoundError if PostClient returns 404', async () => {
@@ -50,7 +50,7 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.notFound
     }
     const promise = sut.doAuth(mockAuthParams())
-    expect(promise).rejects.toThrow(new NotFoundError())
+    await expect(promise).rejects.toThrow(new NotFoundError())
   })
 
   it('Should throw UnexpectedError if PostClient returns 500', async () => {
@@ -59,13 +59,16 @@ describe('RemoteAuth', () => {
       statusCode: HttpStatusCode.internalError
     }
     const promise = sut.doAuth(mockAuthParams())
-    expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
   it('Should throw UnexpectedError for unexpected returns', async () => {
-    const { sut } = makeSut()
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.internalError
+    }
     const promise = sut.doAuth(mockAuthParams())
-    expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
   it('Should call PostClient with correct URL (http 200)', async () => {
@@ -76,7 +79,7 @@ describe('RemoteAuth', () => {
     }
     await sut.doAuth()
     expect(postClientSpy.response.statusCode).toEqual(HttpStatusCode.ok)
-    expect(postClientSpy.url).toBe(url)
+    expect(postClientSpy.url).toEqual(url)
   })
 
   it('Should call PostClient with correct Body (http 200)', async () => {
@@ -98,6 +101,6 @@ describe('RemoteAuth', () => {
       body: result
     }
     const account = await sut.doAuth(mockAuthParams())
-    expect(account).toBe(result)
+    expect(account).toEqual(result)
   })
 })

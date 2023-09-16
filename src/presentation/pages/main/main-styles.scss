@@ -1,0 +1,29 @@
+@import "./../../../presentation/styles/global.scss";
+@import "./../../../presentation/styles/global-colors.scss";
+
+
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  color: white;
+
+  h2 {
+    color: $primary-light;
+    text-align: center;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    padding-bottom: 0.5rem;
+  }
+}
+
+
+main-text {
+  color: $white;
+  text-align: center;
+  font-size: 2rem;
+  text-transform: uppercase;
+  text-decoration-color: white;
+  padding-bottom: 0.5rem;
+}

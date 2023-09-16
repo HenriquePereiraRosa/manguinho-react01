@@ -9,8 +9,8 @@ type SutTypes = {
   mockedAxios: jest.Mocked<typeof axios>
 }
 const mockHttpResponse = (): any => ({
-  data: faker.random.objectElement(),
-  status: faker.random.number()
+  data: faker.random.words(5),
+  status: faker.random.numeric(5)
 })
 const mockAxios = (): jest.Mocked<typeof axios> => {
   const mockedAxios = axios as jest.Mocked<typeof axios>
