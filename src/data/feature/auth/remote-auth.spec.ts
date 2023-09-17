@@ -1,5 +1,4 @@
 import { HttpStatusCode } from '@/data/protocols/http'
-import { PostClientSpy } from '@/data/test/mock-http-client'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
@@ -10,6 +9,7 @@ import { mockAccountModel } from '@/domain/test/mock-account'
 import { mockAuthParams } from '@/domain/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
 import { faker } from '@faker-js/faker'
+import { PostClientSpy } from '@/data/test/mock-http'
 
 type SutTypes = {
   sut: RemoteAuth

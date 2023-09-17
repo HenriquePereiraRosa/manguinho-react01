@@ -1,4 +1,4 @@
-import { HttpStatusCode, type PostClient } from '@/data/protocols/http'
+import { HttpStatusCode, type IPostClient } from '@/data/protocols/http'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
@@ -9,7 +9,7 @@ import { type AccountModel } from '@/domain/model/account-model'
 export class RemoteAuth implements IAuthentication {
   constructor(
     private readonly url: string,
-    private readonly postClient: PostClient<AuthenticationParams, AccountModel>
+    private readonly postClient: IPostClient<AuthenticationParams, AccountModel>
   ) { }
 
   async doAuth(params?: AuthenticationParams): Promise<AccountModel | undefined> {
