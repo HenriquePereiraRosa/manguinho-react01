@@ -67,7 +67,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     setPwd(value)
   }
 
-  const handleSubmit = (): void => {
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault()
+
     if (formState.isLoading) return
 
     setFormState({ ...formState, isLoading: true })
