@@ -4,6 +4,6 @@ import { type IAuthentication } from '@/domain/feature/auth'
 import { makeApiUrl } from '../../http/api-url-factory'
 
 export const makeRemoteAuth = (): IAuthentication => {
-  const apiUrl = makeApiUrl()
+  const apiUrl = makeApiUrl('/login')
   return new RemoteAuth(apiUrl, makeAxiosHttpClient())
 }

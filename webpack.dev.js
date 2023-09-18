@@ -27,6 +27,7 @@ module.exports = merge(common, {
     static: {
       directory: path.resolve(__dirname, 'public'),
     },
+    liveReload: true,
     historyApiFallback: true,
     port: 8080
   },

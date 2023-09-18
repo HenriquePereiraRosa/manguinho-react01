@@ -1,6 +1,6 @@
 {
   "name": "manguinho-react01",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NodeJs Rest API using TDD, Clean Architecture and Typescript",
   "author": "Henrique P. Rosa",
   "license": "UNLICENCED",
@@ -42,7 +42,6 @@
     "concurrently": "^8.2.1",
     "cors": "^2.8.5",
     "css-loader": "^6.7.3",
-    "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-cypress": "^2.13.3",
@@ -64,9 +63,9 @@
     "ts-jest": "^27.1.4",
     "ts-loader": "^9.4.2",
     "typescript": "^4.6.3",
-    "webpack": "^5.83.1",
+    "webpack": "latest",
     "webpack-cli": "^5.1.1",
-    "webpack-dev-server": "^4.15.0",
+    "webpack-dev-server": "latest",
     "webpack-merge": "^5.9.0"
   }
 }

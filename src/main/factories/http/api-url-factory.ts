@@ -1,4 +1,4 @@
 
-export const makeApiUrl = (): string => {
-  return 'http://localhost:3001/api/login'
+export const makeApiUrl = (path: string): string => {
+  return `http://localhost:3001/api${path}`
 }
