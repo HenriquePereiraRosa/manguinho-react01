@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const mockHttpResponse = (): any => ({
   data: faker.random.words(5),
-  status: faker.random.numeric(5)
+  status: faker.datatype.number({ min: 100, max: 500, precision: 100 })
 })
 
 export const mockAxios = (): jest.Mocked<typeof axios> => {

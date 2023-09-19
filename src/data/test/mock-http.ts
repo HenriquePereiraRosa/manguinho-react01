@@ -19,6 +19,6 @@ export class PostClientSpy<T, R> implements IPostClient<T, R> {
   async post(params: IPostClientParams<T>): Promise<HttpResponse<R>> {
     this.url = params.url
     this.body = params.body
-    return Promise.resolve(this.response)
+    return this.response
   }
 }
