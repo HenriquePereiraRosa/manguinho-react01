@@ -1,6 +1,6 @@
-import { type IAuthentication, type TAuthenticationParams } from '../usecases/authentication/auth'
+import { type IAuthentication, type TAuthenticationParams } from '../../domain/usecases/authentication/auth'
 import { faker } from '@faker-js/faker'
-import { type AccountModel } from '../model/account-model'
+import { type AccountModel } from '../../domain/model/account-model'
 import { mockAccountModel } from './mock-account'
 
 export const mockAuthParams = (): TAuthenticationParams => ({

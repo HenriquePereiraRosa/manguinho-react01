@@ -13,19 +13,20 @@ import { isEmpty } from '@/domain/util/string'
 import { Link, useNavigate } from 'react-router-dom'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { type IAuthentication } from '@/domain/usecases/authentication/auth'
+import { type ISaveAccessToken } from '@/domain/usecases/authentication/save-access-token'
 
 type Props = {
   validation: IValidation
   authentication: IAuthentication
+  saveAccessToken: ISaveAccessToken
 }
 
-const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
   const { t } = useTranslation()
   const [formState, setFormState] = useState({
     isLoading: false,
     errorMessage: ''
   })
-
   const navigate = useNavigate()
   const mainPageUrl: string = '/'
   const signUpUrl: string = '/signup'
@@ -78,7 +79,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     authentication.doAuth({ email, password: pwd })
       .then((account) => {
         if (account) {
-          localStorage.setItem('accessToken', account.accessToken)
+          saveAccessToken.save(account.accessToken)
           navigate(mainPageUrl)
         } else throw new UnexpectedError() // todo: add a personalized error here
       })
