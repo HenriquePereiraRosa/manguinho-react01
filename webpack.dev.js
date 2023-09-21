@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const common = require('./webpack.common')
 const { merge } = require('webpack-merge')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = merge(common, {
   devtool: 'inline-source-map',
@@ -33,8 +34,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: './template.dev.html'
-    })
+    new HtmlWebpackPlugin({ template: './template.dev.html' }),
+    new Dotenv({ path: './.env', }),
   ]
 })
