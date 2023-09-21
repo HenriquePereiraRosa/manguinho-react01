@@ -3,21 +3,21 @@ import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-err
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { type AuthenticationParams } from '@/domain/feature/auth'
 import { type AccountModel } from '@/domain/model/account-model'
-import { mockAccountModel } from '@/domain/test/mock-account'
-import { mockAuthParams } from '@/domain/test/mock-auth'
+import { mockAccountModel } from '@/presentation/test/mock-account'
+import { mockAuthParams } from '@/presentation/test/mock-auth'
 import { RemoteAuth } from './remote-auth'
 import { faker } from '@faker-js/faker'
 import { PostClientSpy } from '@/data/test/mock-http'
+import { type TAuthenticationParams } from '@/domain/usecases/authentication/auth'
 
 type SutTypes = {
   sut: RemoteAuth
-  postClientSpy: PostClientSpy<AuthenticationParams, AccountModel>
+  postClientSpy: PostClientSpy<TAuthenticationParams, AccountModel>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const postClientSpy = new PostClientSpy<AuthenticationParams, AccountModel>()
+  const postClientSpy = new PostClientSpy<TAuthenticationParams, AccountModel>()
   const sut = new RemoteAuth(url, postClientSpy)
   return {
     sut,
