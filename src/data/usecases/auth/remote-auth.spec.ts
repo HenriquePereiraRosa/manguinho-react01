@@ -4,12 +4,14 @@ import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { type AccountModel } from '@/domain/model/account-model'
-import { mockAccountModel } from '@/presentation/test/mock-account'
-import { mockAuthParams } from '@/presentation/test/mock-auth'
+import {
+  mockAccountModel,
+  mockAuthParams,
+  PostClientSpy
+} from '@/main/test'
 import { RemoteAuth } from './remote-auth'
 import { faker } from '@faker-js/faker'
-import { PostClientSpy } from '@/data/test/mock-http'
-import { type TAuthenticationParams } from '@/domain/usecases/authentication/auth'
+import { type TAuthenticationParams } from '@/domain/usecases/'
 
 type SutTypes = {
   sut: RemoteAuth

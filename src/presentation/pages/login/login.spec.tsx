@@ -10,11 +10,13 @@ import Login from './login'
 import { t } from 'i18next'
 import { type InputProps } from '@/domain/props/InputProps'
 import faker from '@faker-js/faker'
-import { ValidationStub } from '@/presentation/test/mock-validation'
-import { AuthenticationSpy } from '@/presentation/test/mock-auth'
+import { ValidationStub } from '@/main/test/mock-validation'
+import {
+  AuthenticationSpy,
+  SaveAccessTokenMock
+} from '@/main/test'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { BrowserRouter } from 'react-router-dom'
-import { SaveAccessTokenMock } from '@/presentation/test'
 
 type SutTypes = {
   sut: RenderResult

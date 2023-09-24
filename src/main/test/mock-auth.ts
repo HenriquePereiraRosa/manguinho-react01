@@ -1,4 +1,4 @@
-import { type IAuthentication, type TAuthenticationParams } from '../../domain/usecases/authentication/auth'
+import { type IAuthentication, type TAuthenticationParams } from '../../domain/usecases'
 import { faker } from '@faker-js/faker'
 import { type AccountModel } from '../../domain/model/account-model'
 import { mockAccountModel } from './mock-account'

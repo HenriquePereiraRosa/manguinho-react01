@@ -4,7 +4,10 @@ import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { type AccountModel } from '@/domain/model/account-model'
-import { type IAuthentication, type TAuthenticationParams } from '@/domain/usecases/authentication/auth'
+import {
+  type IAuthentication,
+  type TAuthenticationParams
+} from '@/domain/usecases'
 
 export class RemoteAuth implements IAuthentication {
   constructor(

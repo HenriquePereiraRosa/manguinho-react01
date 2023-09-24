@@ -12,8 +12,10 @@ import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { Link, useNavigate } from 'react-router-dom'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { type IAuthentication } from '@/domain/usecases/authentication/auth'
-import { type ISaveAccessToken } from '@/domain/usecases/authentication/save-access-token'
+import {
+  type IAuthentication,
+  type ISaveAccessToken
+} from '@/domain/usecases'
 
 type Props = {
   validation: IValidation
