@@ -6,6 +6,8 @@ import faker from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
+import { NotFoundError } from '@/domain/errors/not-found-error'
+import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 
 type SutTypes = {
   sut: CreateAccount
@@ -38,6 +40,15 @@ describe('CreateAccount', () => {
     expect(postClientSpy.body).toEqual(createAccountParams)
   })
 
+  it('Should throw Error if PostClient returns 400', async () => {
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+    const response = sut.create(mockCreateAccoutParams())
+    await expect(response).rejects.toThrow(new InvalidParametersError())
+  })
+
   it('Should throw Error if PostClient returns 401', async () => {
     const { sut, postClientSpy } = makeSut()
     postClientSpy.response = {
@@ -45,6 +56,15 @@ describe('CreateAccount', () => {
     }
     const response = sut.create(mockCreateAccoutParams())
     await expect(response).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  it('Should throw NotFoundError if PostClient returns 404', async () => {
+    const { sut, postClientSpy } = makeSut()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+    const response = sut.create(mockCreateAccoutParams())
+    await expect(response).rejects.toThrow(new NotFoundError())
   })
 
   it('Should throw UnexpectedError if PostClient returns 500', async () => {
