@@ -1,10 +1,10 @@
 import { type AccountModel } from '@/domain/model/account-model'
 
-export type TAuthenticationParams = {
+export type IAuthenticationParams = {
   email: string
   password: string
 }
 
 export interface IAuthentication {
-  doAuth: (param: TAuthenticationParams) => Promise<AccountModel | undefined>
+  doAuth: (param: IAuthenticationParams) => Promise<AccountModel | undefined>
 }

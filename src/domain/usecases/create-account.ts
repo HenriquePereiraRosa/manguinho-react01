@@ -1,6 +1,6 @@
 import { type AccountModel } from '../model/account-model'
 
-export type TCreateAccountParams = {
+export type ICreateAccountParams = {
   email: string
   name: string
   password: string
@@ -8,5 +8,5 @@ export type TCreateAccountParams = {
 }
 
 export interface ICreateAccount {
-  create: (param: TCreateAccountParams) => Promise<AccountModel | undefined>
+  create: (param: ICreateAccountParams) => Promise<AccountModel | undefined>
 }

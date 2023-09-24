@@ -11,15 +11,15 @@ import {
 } from '@/main/test'
 import { RemoteAuth } from './remote-auth'
 import { faker } from '@faker-js/faker'
-import { type TAuthenticationParams } from '@/domain/usecases/'
+import { type IAuthenticationParams } from '@/domain/usecases/'
 
 type SutTypes = {
   sut: RemoteAuth
-  postClientSpy: PostClientSpy<TAuthenticationParams, AccountModel>
+  postClientSpy: PostClientSpy<IAuthenticationParams, AccountModel>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const postClientSpy = new PostClientSpy<TAuthenticationParams, AccountModel>()
+  const postClientSpy = new PostClientSpy<IAuthenticationParams, AccountModel>()
   const sut = new RemoteAuth(url, postClientSpy)
   return {
     sut,
@@ -28,6 +28,13 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
 }
 
 describe('RemoteAuth', () => {
+  it('Should Call PostClient with correct url', async () => {
+    const url = faker.internet.url()
+    const { sut, postClientSpy } = makeSut(url)
+    await sut.doAuth(mockAuthParams())
+    expect(postClientSpy.url).toBe(url)
+  })
+
   it('Should throw InvalidParameters if PostClient returns 400', async () => {
     const { sut, postClientSpy } = makeSut()
     postClientSpy.response = {
