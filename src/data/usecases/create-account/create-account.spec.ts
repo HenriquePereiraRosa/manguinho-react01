@@ -1,7 +1,7 @@
 import { type ICreateAccountParams } from '@/domain/usecases'
 import { CreateAccount } from './create-account'
 import { type AccountModel } from '@/domain/model/account-model'
-import { PostClientSpy, mockCreateAccoutParams } from '@/main/test'
+import { PostClientSpy, mockAccountModel, mockCreateAccoutParams } from '@/main/test'
 import faker from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { HttpStatusCode } from '@/data/protocols/http'
@@ -74,5 +74,16 @@ describe('CreateAccount', () => {
     }
     const response = sut.create(mockCreateAccoutParams())
     await expect(response).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should return AccountModel if HttpPostClient return 200', async () => {
+    const { sut, postClientSpy } = makeSut()
+    const result = mockAccountModel()
+    postClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: result
+    }
+    const account = await sut.create(mockCreateAccoutParams())
+    expect(account).toEqual(result)
   })
 })
