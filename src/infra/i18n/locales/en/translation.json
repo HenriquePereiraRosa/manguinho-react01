@@ -7,5 +7,6 @@
   "pwd-place-holder": "Type your password",
   "error-msg-mandatory-field": "Mandatory Field",
   "error-msg-max-length": "Field should be less than ",
-  "error-msg-min-length": "Field should be greater than "
+  "error-msg-min-length": "Field should be greater than ",
+  "fields-not-equals-error": "Field should be greater than "
 }
