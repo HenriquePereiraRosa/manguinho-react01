@@ -17,6 +17,7 @@ import {
 } from '@/main/test'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { BrowserRouter } from 'react-router-dom'
+import { UnexpectedError } from '@/domain/errors/unexpected-error'
 
 type SutTypes = {
   sut: RenderResult
@@ -235,6 +236,19 @@ describe('Login Component', () => {
 
     fireEvent.click(signupLink)
     expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
+  })
+
+  test('Should present error if Authenticaton return void data', async () => {
+    const error = new UnexpectedError()
+    const { container, authenticationSpy } = makeSut()
+    jest.spyOn(authenticationSpy, 'doAuth')
+      .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
+    doSubmit(container)
+
+    await waitFor(async () => container.querySelector('.error-container'))
+
+    const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+    expect(formLoginStatus.innerHTML).toContain(error.message)
   })
 })
 

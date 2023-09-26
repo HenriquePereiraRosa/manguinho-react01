@@ -80,10 +80,12 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
     authentication.doAuth({ email, password: pwd })
       .then((account) => {
-        if (account) {
+        if (!!account && (account.accessToken.trim() !== '')) {
           saveAccessToken.save(account.accessToken)
           navigate(mainPageUrl)
-        } else throw new UnexpectedError() // todo: add a personalized error here
+        } else {
+          throw new UnexpectedError()
+        }
       })
       .catch((error) => {
         setFormState({
