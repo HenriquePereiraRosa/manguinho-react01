@@ -8,11 +8,11 @@ import {
 } from '@testing-library/react'
 import Login from './login'
 import { t } from 'i18next'
-import { type InputProps } from '@/domain/props/InputProps'
 import faker from '@faker-js/faker'
 import { ValidationStub } from '@/main/test/mock-validation'
 import {
   AuthenticationSpy,
+  Helper,
   SaveAccessTokenMock
 } from '@/main/test'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
@@ -66,24 +66,23 @@ describe('Login Component', () => {
   afterEach(cleanup)
 
   test('Should not render FormStatus on start', () => {
-    const { container } = makeSut()
-    const errorContainer = container.querySelector('.error-container')
-    const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
-    const inputEmail = container.querySelector('input[type="email"]') as InputProps
-    const inputPassword = container.querySelector('input[type="password"]') as InputProps
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-
-    expect(errorContainer?.childElementCount).toBe(0)
-    expect(btnSubmit.disabled).toBe(true)
-    expect(inputEmail['error-message']).toBe(undefined)
-    expect(inputPassword['error-message']).toBe(undefined)
+    const { sut } = makeSut()
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
     expect(inputStatuses.length).toBe(0)
+
+    Helper.testChildCount(sut, '.error-container', 0)
+    Helper.testFieldStatus(sut, '.input-status', 0)
+    Helper.testButtonIsDisabled(sut, '.button-submit', true)
+    Helper.testErrorForInput(sut, 'input[type="email"]', 'error-message', undefined)
+    Helper.testErrorForInput(sut, 'input[type="password"]', 'error-message', undefined)
   })
 
   test('Should call Validation with correct email value', () => {
     const { container, validationStub } = makeSut()
 
-    const emailStub = populateEmail(container)
+    const emailStub = Helper.populateField(container,
+      'input[type="email"]',
+      faker.internet.email())
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
@@ -101,7 +100,7 @@ describe('Login Component', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, validationStub } = makeSut({ errorMessage })
 
-    const emailStub = populateEmail(container)
+    const emailStub = Helper.populateField(container, 'input[type="email"]', faker.internet.email())
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-error')
@@ -115,7 +114,7 @@ describe('Login Component', () => {
   test('Should call Validation with correct password value', () => {
     const { container, validationStub } = makeSut()
 
-    const pwdStub = populatePwd(container)
+    const pwdStub = Helper.populateField(container, 'input[type="password"]', ' ')
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv1 = inputStatuses[0].querySelector('.fa-check')
@@ -129,7 +128,7 @@ describe('Login Component', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, validationStub } = makeSut({ errorMessage })
 
-    const pwdStub = populatePwd(container, ' ')
+    const pwdStub = Helper.populateField(container, 'input[type="password"]', ' ')
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
     const faErrorDiv1 = inputStatuses[0].querySelector('.fa-error')
@@ -144,7 +143,7 @@ describe('Login Component', () => {
     const { container, validationStub } = makeSut()
     validationStub.errorMessage = ''
 
-    populateEmailAndPwd(container)
+    Helper.populateEmailAndPwd(container)
 
     const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
     expect(btnSubmit.disabled).toBe(false)
@@ -152,14 +151,14 @@ describe('Login Component', () => {
 
   test('Should show Spinner on submit', () => {
     const { container } = makeSut()
-    doSubmit(container)
+    Helper.doSubmit(container)
     const spinner = container.querySelector('.loader') as HTMLButtonElement
     expect(spinner).toBeTruthy()
   })
 
   test('Should call Authentication with correct values', async () => {
     const { container, authenticationSpy } = makeSut()
-    const { emailStub, pwdStub } = doSubmit(container)
+    const { emailStub, pwdStub } = Helper.doSubmit(container)
 
     expect(authenticationSpy.params).toEqual({
       email: emailStub,
@@ -169,8 +168,8 @@ describe('Login Component', () => {
 
   test('Should not be able to click btn Submit multiple times', async () => {
     const { container, authenticationSpy } = makeSut()
-    doSubmit(container)
-    doSubmit(container)
+    Helper.doSubmit(container)
+    Helper.doSubmit(container)
 
     expect(authenticationSpy.callsCount).toBe(1)
   })
@@ -178,7 +177,7 @@ describe('Login Component', () => {
   test('Should not call Authenticaton if form is invalid', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, authenticationSpy } = makeSut({ errorMessage })
-    doSubmit(container)
+    Helper.doSubmit(container)
 
     expect(authenticationSpy.callsCount).toBe(0)
   })
@@ -188,7 +187,7 @@ describe('Login Component', () => {
     const { container, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.reject(error))
-    doSubmit(container)
+    Helper.doSubmit(container)
 
     await waitFor(async () => container.querySelector('.error-container'))
 
@@ -203,7 +202,7 @@ describe('Login Component', () => {
       saveAccessTokenMock
     } = makeSut()
 
-    doSubmit(container)
+    Helper.doSubmit(container)
 
     await waitFor(async () => container.querySelector('.form'))
 
@@ -243,7 +242,7 @@ describe('Login Component', () => {
     const { container, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
-    doSubmit(container)
+    Helper.doSubmit(container)
 
     await waitFor(async () => container.querySelector('.error-container'))
 
@@ -251,31 +250,3 @@ describe('Login Component', () => {
     expect(formLoginStatus.innerHTML).toContain(error.message)
   })
 })
-
-function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const { emailStub, pwdStub } = populateEmailAndPwd(container)
-  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
-  fireEvent.click(btnSubmit)
-
-  return { emailStub, pwdStub }
-}
-
-function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const emailStub = populateEmail(container)
-  const pwdStub = populatePwd(container)
-  return { emailStub, pwdStub }
-}
-
-function populatePwd(container: HTMLElement, pPwd?: string): string {
-  const pwdStub = pPwd ?? faker.internet.password()
-  const inputPassword = container.querySelector('input[type="password"]') as HTMLElement
-  fireEvent.input(inputPassword, { target: { value: pwdStub } })
-  return pwdStub
-}
-
-function populateEmail(container: HTMLElement, pEmail?: string): string {
-  const emailStub = pEmail ?? faker.internet.email()
-  const inputEmail = container.querySelector('input[type="email"]') as HTMLElement
-  fireEvent.input(inputEmail, { target: { value: emailStub } })
-  return emailStub
-}
