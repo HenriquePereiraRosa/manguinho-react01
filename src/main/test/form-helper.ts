@@ -1,14 +1,30 @@
-import { type InputProps } from '@/domain/props/InputProps'
 import { faker } from '@faker-js/faker'
 import { type RenderResult, fireEvent } from '@testing-library/react'
 
-export const testStatusForField = (sut: RenderResult, fieldName: string, validationError: string = ''): void => {
-  const wrap = sut.getByTestId(`${fieldName}-wrap`)
-  const field = sut.getByTestId(fieldName)
-  const label = sut.getByTestId(`${fieldName}-label`)
-  expect(wrap.getAttribute('data-status')).toBe(validationError ? 'invalid' : 'valid')
-  expect(field.title).toBe(validationError)
-  expect(label.title).toBe(validationError)
+export function populateField(container: HTMLElement, selector: string, value?: string): string {
+  const fieldValueStub = value ?? faker.random.word()
+  const resultField = container.querySelector(selector) as HTMLElement
+  if (resultField === null || resultField === undefined) {
+    throw Error('form-helper: rendered field not found')
+  }
+  fireEvent.input(resultField, { target: { value } })
+  return fieldValueStub
+}
+
+export function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const emailStub = faker.internet.email()
+  const pwdStub = faker.internet.password()
+  populateField(container, 'input[type="email"]', emailStub)
+  populateField(container, 'input[type="password"]', pwdStub)
+  return { emailStub, pwdStub }
+}
+
+export function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const { emailStub, pwdStub } = populateEmailAndPwd(container)
+  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+  fireEvent.click(btnSubmit)
+
+  return { emailStub, pwdStub }
 }
 
 export const testElementExists = (sut: RenderResult, fieldName: string): void => {
@@ -47,32 +63,10 @@ export const testButtonIsDisabled = (sut: RenderResult,
 
 export const testErrorForInput = (sut: RenderResult,
   selector: string,
-  expectedFieldClassName: string,
-  expectStatus: any): void => {
-  const input = sut.container.querySelector(selector) as InputProps
+  attributeName: string,
+  expectedValue: any): void => {
+  const input = sut.container.querySelector(selector) as HTMLInputElement
+  const errorAttributeValue = input.getAttribute(attributeName)
 
-  expect(input[expectedFieldClassName]).toBe(expectStatus)
-}
-
-export function populateField(container: HTMLElement, selector: string, value?: string): string {
-  const fieldValueStub = value ?? faker.random.word()
-  const resultField = container.querySelector(selector) as HTMLElement
-  fireEvent.input(resultField, { target: { value } })
-  return fieldValueStub
-}
-
-export function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const emailStub = faker.internet.email()
-  const pwdStub = faker.internet.password()
-  populateField(container,'input[type="email"]', emailStub)
-  populateField(container,'input[type="password"]', pwdStub)
-  return { emailStub, pwdStub }
-}
-
-export function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const { emailStub, pwdStub } = populateEmailAndPwd(container)
-  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
-  fireEvent.click(btnSubmit)
-
-  return { emailStub, pwdStub }
+  expect(errorAttributeValue).toBe(expectedValue)
 }

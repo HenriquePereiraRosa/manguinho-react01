@@ -1,3 +1,4 @@
+export * from './invalid-chars-error'
 export * from './invalid-field-error'
 export * from './fields-not-equals-error'
 export * from './max-length-field-error'

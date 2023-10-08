@@ -115,6 +115,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
       <InputRoot
         type="text"
+        name='name'
         placeholder={placeholderName}
         onChange={handleNameOnChange}
         value={name}

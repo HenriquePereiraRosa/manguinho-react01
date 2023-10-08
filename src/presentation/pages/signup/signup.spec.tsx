@@ -2,9 +2,8 @@ import React from 'react'
 import {
   type RenderResult,
   render,
-  cleanup
-  // fireEvent,
-  // waitFor
+  cleanup,
+  waitFor
 } from '@testing-library/react'
 import SignUp from './signup'
 // import { t } from 'i18next'
@@ -67,29 +66,25 @@ describe('SignUp Component', () => {
     Helper.testChildCount(sut, '.error-container', 0)
     Helper.testFieldStatus(sut, '.input-status', 0)
     Helper.testButtonIsDisabled(sut, '.button-submit', true)
-    Helper.testErrorForInput(sut, 'input[type="text"]', 'error-message', undefined)
-    Helper.testErrorForInput(sut, 'input[type="email"]', 'error-message', undefined)
-    Helper.testErrorForInput(sut, 'input[type="password"]', 'error-message', undefined)
+    Helper.testErrorForInput(sut, 'input[name="name"]', 'error-message', '')
+    Helper.testErrorForInput(sut, 'input[type="email"]', 'error-message', '')
+    Helper.testErrorForInput(sut, 'input[type="password"]', 'error-message', '')
 
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
 
     expect(inputStatuses.length).toBe(0)
   })
 
-  // test('Should call Validation with correct email value', () => {
-  //   const { container, validationStub } = makeSut()
+  test('Should show name error if Validation fails', async () => {
+    const validationError = 'Any Error Message'
+    const { sut, validationStub } = makeSut({ errorMessage: validationError })
 
-  //   const emailStub = populateEmail(container)
+    Helper.populateField(sut.container, 'input[name="name"]', 'John Doe')
 
-  //   const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-  //   const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
-  //   const faCheckDiv1 = inputStatuses[1]
+    await waitFor(async () => sut.container.querySelector('input[name="name"]'))
+    expect(validationStub.errorMessage).toBe(validationError)
 
-  //   expect(validationStub.type).toBe('email')
-  //   expect(validationStub.value).toBe(emailStub)
-  //   expect(inputStatuses.length).toBeGreaterThan(0)
-
-  //   expect(faCheckDiv0).not.toBeNull()
-  //   expect(faCheckDiv1).toBeUndefined()
-  // })
+    console.log(sut.container.innerHTML)
+    Helper.testErrorForInput(sut, 'input[name="name"]', 'error-message', validationError)
+  })
 })

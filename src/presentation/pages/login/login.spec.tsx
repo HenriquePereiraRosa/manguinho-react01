@@ -73,8 +73,8 @@ describe('Login Component', () => {
     Helper.testChildCount(sut, '.error-container', 0)
     Helper.testFieldStatus(sut, '.input-status', 0)
     Helper.testButtonIsDisabled(sut, '.button-submit', true)
-    Helper.testErrorForInput(sut, 'input[type="email"]', 'error-message', undefined)
-    Helper.testErrorForInput(sut, 'input[type="password"]', 'error-message', undefined)
+    Helper.testErrorForInput(sut, 'input[type="email"]', 'error-message', '')
+    Helper.testErrorForInput(sut, 'input[type="password"]', 'error-message', '')
   })
 
   test('Should call Validation with correct email value', () => {
@@ -126,17 +126,16 @@ describe('Login Component', () => {
 
   test('Should show Password error message if Password Validation fails', () => {
     const errorMessage = t('error-msg-mandatory-field')
-    const { container, validationStub } = makeSut({ errorMessage })
+    const { sut, container, validationStub } = makeSut({ errorMessage })
 
     const pwdStub = Helper.populateField(container, 'input[type="password"]', ' ')
 
+    Helper.testFieldStatus(sut, '.fa-error', 1)
     const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
-    const faErrorDiv1 = inputStatuses[0].querySelector('.fa-error')
 
     expect(validationStub.type).toBe('password')
     expect(validationStub.value).toBe(pwdStub)
     expect(inputStatuses[0].title).toBe(t('error-msg-mandatory-field'))
-    expect(faErrorDiv1).not.toBeNull()
   })
 
   test('Should enable Submit button if form is valid', async () => {
