@@ -118,6 +118,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
           <InputRoot
             type="password"
+            name="password"
             placeholder={placeholderPwd}
             onChange={handlePwdOnChange}
             value={pwd}

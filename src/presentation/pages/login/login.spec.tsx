@@ -18,6 +18,7 @@ import {
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { BrowserRouter } from 'react-router-dom'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
+import { INPUT_SELECTOR_EMAIL, INPUT_SELECTOR_PWD } from '@/main/global/constants'
 
 type SutTypes = {
   sut: RenderResult
@@ -139,25 +140,25 @@ describe('Login Component', () => {
   })
 
   test('Should enable Submit button if form is valid', async () => {
-    const { container, validationStub } = makeSut()
-    validationStub.errorMessage = ''
+    const { sut } = makeSut()
 
-    Helper.populateEmailAndPwd(container)
+    Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL)
+    Helper.populateField(sut.container, INPUT_SELECTOR_PWD)
 
-    const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+    const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
     expect(btnSubmit.disabled).toBe(false)
   })
 
   test('Should show Spinner on submit', () => {
     const { container } = makeSut()
-    Helper.doSubmit(container)
+    doSubmit(container)
     const spinner = container.querySelector('.loader') as HTMLButtonElement
     expect(spinner).toBeTruthy()
   })
 
   test('Should call Authentication with correct values', async () => {
     const { container, authenticationSpy } = makeSut()
-    const { emailStub, pwdStub } = Helper.doSubmit(container)
+    const { emailStub, pwdStub } = doSubmit(container)
 
     expect(authenticationSpy.params).toEqual({
       email: emailStub,
@@ -167,8 +168,8 @@ describe('Login Component', () => {
 
   test('Should not be able to click btn Submit multiple times', async () => {
     const { container, authenticationSpy } = makeSut()
-    Helper.doSubmit(container)
-    Helper.doSubmit(container)
+    doSubmit(container)
+    doSubmit(container)
 
     expect(authenticationSpy.callsCount).toBe(1)
   })
@@ -176,7 +177,7 @@ describe('Login Component', () => {
   test('Should not call Authenticaton if form is invalid', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { container, authenticationSpy } = makeSut({ errorMessage })
-    Helper.doSubmit(container)
+    doSubmit(container)
 
     expect(authenticationSpy.callsCount).toBe(0)
   })
@@ -186,7 +187,7 @@ describe('Login Component', () => {
     const { container, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.reject(error))
-    Helper.doSubmit(container)
+    doSubmit(container)
 
     await waitFor(async () => container.querySelector('.error-container'))
 
@@ -201,7 +202,7 @@ describe('Login Component', () => {
       saveAccessTokenMock
     } = makeSut()
 
-    Helper.doSubmit(container)
+    doSubmit(container)
 
     await waitFor(async () => container.querySelector('.form'))
 
@@ -241,7 +242,7 @@ describe('Login Component', () => {
     const { container, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
-    Helper.doSubmit(container)
+    doSubmit(container)
 
     await waitFor(async () => container.querySelector('.error-container'))
 
@@ -249,3 +250,19 @@ describe('Login Component', () => {
     expect(formLoginStatus.innerHTML).toContain(error.message)
   })
 })
+
+function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const emailStub = faker.internet.email()
+  const pwdStub = faker.internet.password()
+  Helper.populateField(container, INPUT_SELECTOR_EMAIL, emailStub)
+  Helper.populateField(container, INPUT_SELECTOR_PWD, pwdStub)
+  return { emailStub, pwdStub }
+}
+
+function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
+  const { emailStub, pwdStub } = populateEmailAndPwd(container)
+  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+  fireEvent.click(btnSubmit)
+
+  return { emailStub, pwdStub }
+}

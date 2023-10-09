@@ -4,28 +4,13 @@ import { type RenderResult, fireEvent } from '@testing-library/react'
 export function populateField(container: HTMLElement, selector: string, value?: string): string {
   const fieldValueStub = value ?? faker.random.word()
   const resultField = container.querySelector(selector)
-  if (resultField === null || resultField === undefined) {
+  if (!resultField) {
     console.error(container.innerHTML)
     throw Error('form-helper: rendered field not found')
   }
+
   fireEvent.input(resultField, { target: { value: fieldValueStub } })
   return fieldValueStub
-}
-
-export function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const emailStub = faker.internet.email()
-  const pwdStub = faker.internet.password()
-  populateField(container, 'input[type="email"]', emailStub)
-  populateField(container, 'input[type="password"]', pwdStub)
-  return { emailStub, pwdStub }
-}
-
-export function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const { emailStub, pwdStub } = populateEmailAndPwd(container)
-  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
-  fireEvent.click(btnSubmit)
-
-  return { emailStub, pwdStub }
 }
 
 export const testElementExists = (sut: RenderResult, fieldName: string): void => {
