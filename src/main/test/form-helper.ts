@@ -3,11 +3,12 @@ import { type RenderResult, fireEvent } from '@testing-library/react'
 
 export function populateField(container: HTMLElement, selector: string, value?: string): string {
   const fieldValueStub = value ?? faker.random.word()
-  const resultField = container.querySelector(selector) as HTMLElement
+  const resultField = container.querySelector(selector)
   if (resultField === null || resultField === undefined) {
+    console.error(container.innerHTML)
     throw Error('form-helper: rendered field not found')
   }
-  fireEvent.input(resultField, { target: { value } })
+  fireEvent.input(resultField, { target: { value: fieldValueStub } })
   return fieldValueStub
 }
 

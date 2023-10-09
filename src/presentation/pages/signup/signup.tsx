@@ -130,6 +130,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
       <InputRoot
         type="password"
+        name='password'
         placeholder={placeholderPwd}
         onChange={handlePwdOnChange}
         value={pwd}
@@ -137,6 +138,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
       <InputRoot
         type="password"
+        name='password-confirmation'
         placeholder={placeholderPwdConfirmation}
         onChange={handlePwdConfirmOnChange}
         value={pwdConfirm}

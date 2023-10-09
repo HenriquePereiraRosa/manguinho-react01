@@ -65,7 +65,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 describe('Login Component', () => {
   afterEach(cleanup)
 
-  test('Should not render FormStatus on start', () => {
+  test('Should not render FormStatus errors on start', () => {
     const { sut } = makeSut()
     const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
     expect(inputStatuses.length).toBe(0)
