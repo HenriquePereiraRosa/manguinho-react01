@@ -42,7 +42,12 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
   useEffect(() => {
     updateBtnStatus()
-  }, [email, pwd])
+  }, [
+    name,
+    email,
+    pwd,
+    pwdConfirm
+  ])
 
   const updateBtnStatus = (): void => {
     if (!isEmpty(name) &&
@@ -91,6 +96,8 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
     setFormState({ ...formState, isLoading: true })
     setBtnDisabled(true)
+
+    console.log('TODO: Handle Signup Submit')
   }
 
   const goToLogin = (): void => {

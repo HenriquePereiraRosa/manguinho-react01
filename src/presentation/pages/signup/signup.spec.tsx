@@ -118,4 +118,16 @@ describe('SignUp Component', () => {
     expect(validationStub.errorMessage).toBe(validationError)
     Helper.testErrorForInput(sut, INPUT_SELECTOR_PWD_CONFIRM, 'error-message', validationError)
   })
+
+  test('Should enable Submit button if form is valid', async () => {
+    const { sut } = makeSut()
+
+    Helper.populateField(sut.container, INPUT_SELECTOR_NAME)
+    Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL)
+    Helper.populateField(sut.container, INPUT_SELECTOR_PWD)
+    Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM)
+
+    const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
+    expect(btnSubmit.disabled).toBe(false)
+  })
 })
