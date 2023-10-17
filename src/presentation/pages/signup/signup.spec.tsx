@@ -2,7 +2,8 @@ import React from 'react'
 import {
   type RenderResult,
   render,
-  cleanup
+  cleanup,
+  fireEvent
 } from '@testing-library/react'
 import SignUp from './signup'
 import { ValidationStub } from '@/main/test/mock-validation'
@@ -13,11 +14,13 @@ import {
 } from '@/main/test'
 import { BrowserRouter } from 'react-router-dom'
 import {
+  CLASS_BTN_SELECTOR_SUBMIT,
   INPUT_SELECTOR_EMAIL,
   INPUT_SELECTOR_NAME,
   INPUT_SELECTOR_PWD,
   INPUT_SELECTOR_PWD_CONFIRM
 } from '@/main/global/constants'
+import faker from '@faker-js/faker'
 
 type SutTypes = {
   sut: RenderResult
@@ -122,12 +125,32 @@ describe('SignUp Component', () => {
   test('Should enable Submit button if form is valid', async () => {
     const { sut } = makeSut()
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_NAME)
-    Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL)
-    Helper.populateField(sut.container, INPUT_SELECTOR_PWD)
-    Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM)
+    populateAllFields(sut)
 
-    const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
-    expect(btnSubmit.disabled).toBe(false)
+    Helper.checkIfElementExists(sut, CLASS_BTN_SELECTOR_SUBMIT)
+  })
+
+  test('Should show Spinner on valid Submit', async () => {
+    const { sut } = makeSut()
+
+    doValidSubmit(sut)
+    Helper.checkIfElementExists(sut, '.loader')
   })
 })
+
+function populateAllFields(sut: RenderResult): void {
+  const nameStub = faker.internet.userName()
+  const emailStub = faker.internet.email()
+  const pwdStub = faker.internet.password()
+
+  Helper.populateField(sut.container, INPUT_SELECTOR_NAME, nameStub)
+  Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL, emailStub)
+  Helper.populateField(sut.container, INPUT_SELECTOR_PWD, pwdStub)
+  Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdStub)
+}
+
+function doValidSubmit(sut: RenderResult): void {
+  populateAllFields(sut)
+  const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
+  fireEvent.click(btnSubmit)
+}

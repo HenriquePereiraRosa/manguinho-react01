@@ -13,13 +13,13 @@ export function populateField(container: HTMLElement, selector: string, value?: 
   return fieldValueStub
 }
 
-export const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const el = sut.getByTestId(fieldName)
+export const checkIfElementExists = (sut: RenderResult, fieldName: string): void => {
+  const el = sut.container.querySelector(fieldName)
   expect(el).toBeTruthy()
 }
 
 export const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
-  const el = sut.getByTestId(fieldName)
+  const el = sut.container.querySelector(fieldName) as HTMLElement
   expect(el.textContent).toBe(text)
 }
 

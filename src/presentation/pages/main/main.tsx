@@ -2,7 +2,6 @@ import React from 'react'
 import Styles from './main-styles.scss'
 import {
   Footer,
-  FormLoginStatus,
   HeaderLogin
 } from '@/presentation/components'
 import { t } from 'i18next'
@@ -21,7 +20,6 @@ const Main: React.FC = () => {
 
     <div className={Styles.main}>
       <HeaderLogin />
-      <FormLoginStatus />
 
       <div>
         <h1 className={Styles['main-text']}>

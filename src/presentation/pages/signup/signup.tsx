@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useEffect, useState } from 'react'
 import Styles from './signup-styles.scss'
 import {
   Footer,
-  FormLoginStatus,
+  FormStatus,
   HeaderLogin,
   InputRoot
 } from '@/presentation/components'
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
+import { FormContext } from '@/presentation/contexts'
 
 type Props = {
   validation: IValidation
@@ -112,67 +113,71 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
     <div className={Styles.main}>
       <HeaderLogin />
-      <FormLoginStatus />
 
-      <div>
-        <h1 className={Styles['main-text']}>
-          SIGNUP PAGE: (IN CONSTRUICTION)
-        </h1>
-      </div>
+      <FormContext.Provider value={formState} >
 
-      <InputRoot
-        type="text"
-        name='name'
-        placeholder={placeholderName}
-        onChange={handleNameOnChange}
-        value={name}
-        error-message={nameError} />
+        <div>
+          <h1 className={Styles['main-text']}>
+            SIGNUP PAGE: (IN CONSTRUICTION)
+          </h1>
+        </div>
 
-      <InputRoot
-        type="email"
-        placeholder={placeholderEmail}
-        onChange={handleEmailOnChange}
-        value={email}
-        error-message={emailError} />
+        <InputRoot
+          type="text"
+          name='name'
+          placeholder={placeholderName}
+          onChange={handleNameOnChange}
+          value={name}
+          error-message={nameError} />
 
-      <InputRoot
-        type="password"
-        name='password'
-        placeholder={placeholderPwd}
-        onChange={handlePwdOnChange}
-        value={pwd}
-        error-message={pwdError} />
+        <InputRoot
+          type="email"
+          placeholder={placeholderEmail}
+          onChange={handleEmailOnChange}
+          value={email}
+          error-message={emailError} />
 
-      <InputRoot
-        type="password"
-        name='password-confirmation'
-        placeholder={placeholderPwdConfirmation}
-        onChange={handlePwdConfirmOnChange}
-        value={pwdConfirm}
-        error-message={pwdConfirmError} />
+        <InputRoot
+          type="password"
+          name='password'
+          placeholder={placeholderPwd}
+          onChange={handlePwdOnChange}
+          value={pwd}
+          error-message={pwdError} />
 
-      <button
-        className={Styles['button-submit']}
-        type="submit"
-        disabled={!btnDisabled}
-        onClick={handleSubmit} >
-        {t('enter')}
-      </button>
+        <InputRoot
+          type="password"
+          name='password-confirmation'
+          placeholder={placeholderPwdConfirmation}
+          onChange={handlePwdConfirmOnChange}
+          value={pwdConfirm}
+          error-message={pwdConfirmError} />
 
-      <Link
-        className={Styles.signup}
-        to={loginUrl}
-        onClick={goToLogin}>
-        {t('login')}
-      </Link>
+        <button
+          className={Styles['button-submit']}
+          type="submit"
+          disabled={!btnDisabled}
+          onClick={handleSubmit} >
+          {t('enter')}
+        </button>
 
-      <Link
-        className={Styles.signup}
-        to={mainPageUrl}
-        onClick={goToMain}>
-        MAIN PAGE
-        {t('signup')}
-      </Link>
+        <Link
+          className={Styles.signup}
+          to={loginUrl}
+          onClick={goToLogin}>
+          {t('login')}
+        </Link>
+
+        <Link
+          className={Styles.signup}
+          to={mainPageUrl}
+          onClick={goToMain}>
+          MAIN PAGE
+          {t('signup')}
+        </Link>
+
+        <FormStatus />
+      </FormContext.Provider>
 
       <Footer />
     </div>

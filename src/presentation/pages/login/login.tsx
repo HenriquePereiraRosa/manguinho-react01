@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useState, useEffect } from 'react'
 import Styles from './login-styles.scss'
 import {
   Footer,
-  FormLoginStatus,
+  FormStatus,
   HeaderLogin,
   InputRoot
 } from '@/presentation/components'
@@ -139,7 +139,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             {t('signup')}
           </Link>
 
-          <FormLoginStatus />
+          <FormStatus />
 
         </form>
       </FormContext.Provider>
