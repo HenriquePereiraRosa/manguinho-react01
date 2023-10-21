@@ -136,73 +136,75 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
     <div className={Styles.main}>
       <HeaderLogin />
 
-      <FormContext.Provider value={formState} >
+      <div className={Styles.form}>
+        <FormContext.Provider value={formState} >
 
-        <div>
-          <h1 className={Styles['main-text']}>
-            SIGNUP PAGE: (IN CONSTRUICTION)
-          </h1>
-        </div>
+          <div>
+            <h1 className={Styles['main-text']}>
+              SIGNUP PAGE: (UNDER CONSTRUCTION)
+            </h1>
+          </div>
 
-        <InputRoot
-          type="text"
-          name='name'
-          placeholder={placeholderName}
-          onChange={handleNameOnChange}
-          value={name}
-          error-message={nameError} />
+          <InputRoot
+            type="text"
+            name='name'
+            placeholder={placeholderName}
+            onChange={handleNameOnChange}
+            value={name}
+            error-message={nameError} />
 
-        <InputRoot
-          type="email"
-          placeholder={placeholderEmail}
-          onChange={handleEmailOnChange}
-          value={email}
-          error-message={emailError} />
+          <InputRoot
+            type="email"
+            placeholder={placeholderEmail}
+            onChange={handleEmailOnChange}
+            value={email}
+            error-message={emailError} />
 
-        <InputRoot
-          type="password"
-          name='password'
-          placeholder={placeholderPwd}
-          onChange={handlePwdOnChange}
-          value={pwd}
-          error-message={pwdError} />
+          <InputRoot
+            type="password"
+            name='password'
+            placeholder={placeholderPwd}
+            onChange={handlePwdOnChange}
+            value={pwd}
+            error-message={pwdError} />
 
-        <InputRoot
-          type="password"
-          name='password-confirmation'
-          placeholder={placeholderPwdConfirmation}
-          onChange={handlePwdConfirmOnChange}
-          value={pwdConfirm}
-          error-message={pwdConfirmError} />
+          <InputRoot
+            type="password"
+            name='password-confirmation'
+            placeholder={placeholderPwdConfirmation}
+            onChange={handlePwdConfirmOnChange}
+            value={pwdConfirm}
+            error-message={pwdConfirmError} />
 
-        <button
-          className={Styles['button-submit']}
-          type="submit"
-          disabled={!btnDisabled}
-          onClick={handleSubmit} >
-          {t('enter')}
-        </button>
+          <button
+            className={Styles['button-submit']}
+            type="submit"
+            disabled={!btnDisabled}
+            onClick={handleSubmit} >
+            {t('enter')}
+          </button>
 
-        <Link
-          className={Styles.signup}
-          to={loginPageUrl}
-          onClick={goToLogin}>
-          {t('login')}
-        </Link>
+          <Link
+            className={Styles.signup}
+            to={loginPageUrl}
+            onClick={goToLogin}>
+            {t('login')}
+          </Link>
 
-        <Link
-          className={Styles.signup}
-          to={mainPageUrl}
-          onClick={goToMain}>
-          MAIN PAGE
-          {t('signup')}
-        </Link>
+          <Link
+            className={Styles.signup}
+            to={mainPageUrl}
+            onClick={goToMain}>
+            MAIN PAGE
+            {t('signup')}
+          </Link>
 
-        <FormStatus />
-      </FormContext.Provider>
+          <FormStatus />
+        </FormContext.Provider>
+      </div>
 
       <Footer />
-    </div>
+    </div >
   )
 }
 

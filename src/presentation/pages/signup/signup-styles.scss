@@ -18,6 +18,16 @@
   }
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  width: 50vw;
+
+  background-color: $bg;
+  color: $white;
+}
 
 main-text {
   color: $white;
