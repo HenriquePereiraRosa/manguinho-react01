@@ -8,6 +8,7 @@ import {
 import SignUp from './signup'
 import { ValidationStub } from '@/main/test/mock-validation'
 import {
+  AccountCreationSpy,
   AuthenticationSpy,
   Helper,
   SaveAccessTokenMock
@@ -28,6 +29,14 @@ type SutTypes = {
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
   saveAccessTokenMock: SaveAccessTokenMock
+  accountCreationSpy: AccountCreationSpy
+}
+
+type PopulateParams = {
+  name: string
+  email: string
+  password: string
+  passwordConfimation: string
 }
 
 type SutParams = {
@@ -45,11 +54,13 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.errorMessage ?? ''
 
   const authenticationSpy = new AuthenticationSpy()
+  const accountCreationSpy = new AccountCreationSpy()
   const saveAccessTokenMock = new SaveAccessTokenMock()
   const sut = render(
     <BrowserRouter>
       <SignUp
-        validation={validationStub} />
+        validation={validationStub}
+        accountCreation={accountCreationSpy} />
     </BrowserRouter >
   )
   const { container } = sut
@@ -59,6 +70,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     container,
     validationStub,
     authenticationSpy,
+    accountCreationSpy,
     saveAccessTokenMock
   }
 }
@@ -136,21 +148,62 @@ describe('SignUp Component', () => {
     doValidSubmit(sut)
     Helper.checkIfElementExists(sut, '.loader')
   })
+
+  test('Should call addAccount with correct values', async () => {
+    const { sut, accountCreationSpy } = makeSut()
+
+    const {
+      nameStub,
+      emailStub,
+      pwdStub
+    } = doValidSubmit(sut)
+
+    expect(accountCreationSpy.params).toEqual({
+      name: nameStub,
+      email: emailStub,
+      password: pwdStub,
+      passwordConfimation: pwdStub
+    })
+  })
 })
 
-function populateAllFields(sut: RenderResult): void {
-  const nameStub = faker.internet.userName()
-  const emailStub = faker.internet.email()
-  const pwdStub = faker.internet.password()
+function populateAllFields(sut: RenderResult, values?: PopulateParams): void {
+  const nameStub = values?.name ?? faker.internet.userName()
+  const emailStub = values?.email ?? faker.internet.email()
+  const pwdStub = values?.password ?? faker.internet.password()
+  const pwdConfirmStub = values?.passwordConfimation ?? faker.internet.password()
 
   Helper.populateField(sut.container, INPUT_SELECTOR_NAME, nameStub)
   Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL, emailStub)
   Helper.populateField(sut.container, INPUT_SELECTOR_PWD, pwdStub)
-  Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdStub)
+  Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdConfirmStub)
 }
 
-function doValidSubmit(sut: RenderResult): void {
-  populateAllFields(sut)
+function doValidSubmit(sut: RenderResult): {
+  nameStub
+  emailStub
+  pwdStub
+  pwdConfirmStub
+} {
+  const nameStub = faker.internet.userName()
+  const emailStub = faker.internet.email()
+  const pwdStub = faker.internet.password()
+  const pwdConfirmStub = pwdStub
+
+  populateAllFields(sut, {
+    name: nameStub,
+    email: emailStub,
+    password: pwdStub,
+    passwordConfimation: pwdConfirmStub
+  })
+
   const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
   fireEvent.click(btnSubmit)
+
+  return {
+    nameStub,
+    emailStub,
+    pwdStub,
+    pwdConfirmStub
+  }
 }

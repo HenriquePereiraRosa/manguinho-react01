@@ -1,5 +1,5 @@
-import { type ICreateAccountParams } from '@/domain/usecases'
-import { CreateAccount } from './create-account'
+import { type IAccountCreationParams } from '@/domain/usecases'
+import { AccountCreation } from './create-account'
 import { type AccountModel } from '@/domain/model/account-model'
 import { PostClientSpy, mockAccountModel, mockCreateAccoutParams } from '@/main/test'
 import faker from '@faker-js/faker'
@@ -10,13 +10,13 @@ import { NotFoundError } from '@/domain/errors/not-found-error'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 
 type SutTypes = {
-  sut: CreateAccount
-  postClientSpy: PostClientSpy<ICreateAccountParams, AccountModel>
+  sut: AccountCreation
+  postClientSpy: PostClientSpy<IAccountCreationParams, AccountModel>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const postClientSpy = new PostClientSpy<ICreateAccountParams, AccountModel>()
-  const sut = new CreateAccount(url, postClientSpy)
+  const postClientSpy = new PostClientSpy<IAccountCreationParams, AccountModel>()
+  const sut = new AccountCreation(url, postClientSpy)
   return {
     sut,
     postClientSpy

@@ -1,12 +1,12 @@
 import { type AccountModel } from '../model/account-model'
 
-export type ICreateAccountParams = {
+export type IAccountCreationParams = {
   email: string
   name: string
   password: string
   passwordConfimation: string
 }
 
-export interface ICreateAccount {
-  create: (param: ICreateAccountParams) => Promise<AccountModel | undefined>
+export interface IAccountCreation {
+  create: (param: IAccountCreationParams) => Promise<AccountModel | undefined>
 }

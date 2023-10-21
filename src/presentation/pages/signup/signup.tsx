@@ -11,15 +11,18 @@ import { Link, useNavigate } from 'react-router-dom'
 import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { FormContext } from '@/presentation/contexts'
+import { type IAccountCreation } from '@/domain/usecases'
+import { UnexpectedError } from '@/domain/errors/unexpected-error'
 
 type Props = {
   validation: IValidation
+  accountCreation: IAccountCreation
 }
 
-const SignUp: React.FC<Props> = ({ validation }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
   const { t } = useTranslation()
   const mainPageUrl: string = '/'
-  const loginUrl = '/login'
+  const loginPageUrl = '/login'
   const navigate = useNavigate()
   const [formState, setFormState] = useState({
     isLoading: false,
@@ -98,11 +101,30 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     setFormState({ ...formState, isLoading: true })
     setBtnDisabled(true)
 
-    console.log('TODO: Handle Signup Submit')
+    accountCreation.create({
+      name,
+      email,
+      password: pwd,
+      passwordConfimation: pwdConfirm
+    })
+      .then((account) => {
+        if (!!account && (account.accessToken.trim() !== '')) {
+          navigate(loginPageUrl)
+        } else {
+          throw new UnexpectedError()
+        }
+      })
+      .catch((error) => {
+        setFormState({
+          isLoading: false,
+          errorMessage: error.message
+        })
+        setBtnDisabled(false)
+      })
   }
 
   const goToLogin = (): void => {
-    navigate(loginUrl)
+    navigate(loginPageUrl)
   }
 
   const goToMain = (): void => {
@@ -163,7 +185,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
 
         <Link
           className={Styles.signup}
-          to={loginUrl}
+          to={loginPageUrl}
           onClick={goToLogin}>
           {t('login')}
         </Link>

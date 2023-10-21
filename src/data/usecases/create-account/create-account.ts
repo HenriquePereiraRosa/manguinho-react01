@@ -4,15 +4,15 @@ import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error
 import { NotFoundError } from '@/domain/errors/not-found-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { type AccountModel } from '@/domain/model/account-model'
-import { type ICreateAccount, type ICreateAccountParams } from '@/domain/usecases'
+import { type IAccountCreation, type IAccountCreationParams } from '@/domain/usecases'
 
-export class CreateAccount implements ICreateAccount {
+export class AccountCreation implements IAccountCreation {
   constructor(
     private readonly url: string,
-    private readonly postClient: IPostClient<ICreateAccountParams, AccountModel>
+    private readonly postClient: IPostClient<IAccountCreationParams, AccountModel>
   ) { }
 
-  async create(params: ICreateAccountParams): Promise<AccountModel | undefined> {
+  async create(params: IAccountCreationParams): Promise<AccountModel | undefined> {
     const res = await this.postClient.post({
       url: this.url,
       body: params
