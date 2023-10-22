@@ -9,7 +9,6 @@ import SignUp from './signup'
 import { ValidationStub } from '@/main/test/mock-validation'
 import {
   AccountCreationSpy,
-  AuthenticationSpy,
   Helper,
   SaveAccessTokenMock
 } from '@/main/test'
@@ -27,7 +26,6 @@ type SutTypes = {
   sut: RenderResult
   container: HTMLElement
   validationStub: ValidationStub
-  authenticationSpy: AuthenticationSpy
   saveAccessTokenMock: SaveAccessTokenMock
   accountCreationSpy: AccountCreationSpy
 }
@@ -53,7 +51,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.errorMessage ?? ''
 
-  const authenticationSpy = new AuthenticationSpy()
   const accountCreationSpy = new AccountCreationSpy()
   const saveAccessTokenMock = new SaveAccessTokenMock()
   const sut = render(
@@ -69,7 +66,6 @@ const makeSut = (params?: SutParams): SutTypes => {
     sut,
     container,
     validationStub,
-    authenticationSpy,
     accountCreationSpy,
     saveAccessTokenMock
   }
@@ -164,6 +160,15 @@ describe('SignUp Component', () => {
       password: pwdStub,
       passwordConfimation: pwdStub
     })
+  })
+
+  test('Should not be able to click btn Submit multiple times', async () => {
+    const { sut, accountCreationSpy } = makeSut()
+    doValidSubmit(sut)
+    doValidSubmit(sut)
+    doValidSubmit(sut)
+
+    expect(accountCreationSpy.callsCount).toBe(1)
   })
 })
 
