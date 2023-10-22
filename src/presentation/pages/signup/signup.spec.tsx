@@ -21,10 +21,11 @@ import {
   INPUT_SELECTOR_PWD_CONFIRM
 } from '@/main/global/constants'
 import faker from '@faker-js/faker'
+import { t } from 'i18next'
+import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
 
 type SutTypes = {
   sut: RenderResult
-  container: HTMLElement
   validationStub: ValidationStub
   saveAccessTokenMock: SaveAccessTokenMock
   accountCreationSpy: AccountCreationSpy
@@ -60,11 +61,9 @@ const makeSut = (params?: SutParams): SutTypes => {
         accountCreation={accountCreationSpy} />
     </BrowserRouter >
   )
-  const { container } = sut
 
   return {
     sut,
-    container,
     validationStub,
     accountCreationSpy,
     saveAccessTokenMock
@@ -75,7 +74,7 @@ describe('SignUp Component', () => {
   afterEach(cleanup)
 
   test('Should not render error-message inFormStatus on start', () => {
-    const { sut, container } = makeSut()
+    const { sut } = makeSut()
 
     Helper.testChildCount(sut, '.error-container', 0)
     Helper.testFieldStatus(sut, '.input-status', 0)
@@ -85,7 +84,7 @@ describe('SignUp Component', () => {
     Helper.testErrorForInput(sut, INPUT_SELECTOR_PWD, 'error-message', '')
     Helper.testErrorForInput(sut, INPUT_SELECTOR_PWD_CONFIRM, 'error-message', '')
 
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
 
     expect(inputStatuses.length).toBe(0)
   })
@@ -145,7 +144,7 @@ describe('SignUp Component', () => {
     Helper.checkIfElementExists(sut, '.loader')
   })
 
-  test('Should call addAccount with correct values', async () => {
+  test('Should call AccountCreation with correct values', async () => {
     const { sut, accountCreationSpy } = makeSut()
 
     const {
@@ -169,6 +168,24 @@ describe('SignUp Component', () => {
     doValidSubmit(sut)
 
     expect(accountCreationSpy.callsCount).toBe(1)
+  })
+
+  test('Should not call AccountCreation if form is invalid', () => {
+    const errorMessage = t('error-msg-mandatory-field')
+    const { sut, accountCreationSpy } = makeSut({ errorMessage })
+    doValidSubmit(sut)
+
+    expect(accountCreationSpy.callsCount).toBe(0)
+  })
+
+  test('Should present error if AccountCreation fails', async () => {
+    const error = new InvalidParametersError()
+    const { sut, accountCreationSpy } = makeSut()
+    jest.spyOn(accountCreationSpy, 'create')
+      .mockReturnValueOnce(Promise.reject(error))
+    doValidSubmit(sut)
+
+    Helper.testErrorForElement(sut, '.error-container', error.message)
   })
 })
 

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { type RenderResult, fireEvent } from '@testing-library/react'
+import { type RenderResult, fireEvent, waitFor } from '@testing-library/react'
 
 export function populateField(container: HTMLElement, selector: string, value?: string): string {
   const fieldValueStub = value ?? faker.random.word()
@@ -55,4 +55,15 @@ export const testErrorForInput = (sut: RenderResult,
   const errorAttributeValue = input.getAttribute(attributeName)
 
   expect(errorAttributeValue).toBe(expectedValue)
+}
+
+export const testErrorForElement = async (sut: RenderResult,
+  selector: string,
+  expectedValue: any): Promise<void> => {
+  const element = sut.container.querySelector(selector) as HTMLInputElement
+
+  await waitFor(async () => sut.container.querySelector('.error-container'))
+  console.log(element.innerHTML)
+
+  expect(element.innerHTML).toContain(expectedValue)
 }
