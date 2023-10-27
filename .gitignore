@@ -108,3 +108,4 @@ dist
 .yarn/install-state.gz
 
 .pnp.cjs
+yarn.lock
