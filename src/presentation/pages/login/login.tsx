@@ -47,15 +47,12 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
   }, [email, pwd])
 
   const updateBtnStatus = (): void => {
-    if (!isEmpty(email) &&
+    const isFormValid = (!isEmpty(email) &&
       !isEmpty(pwd) &&
       isEmpty(emailError) &&
-      isEmpty(pwdError)) {
-      setBtnDisabled(true)
-      return
-    }
+      isEmpty(pwdError))
 
-    setBtnDisabled(false)
+    setBtnDisabled(isFormValid)
   }
 
   const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -92,7 +89,9 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           isLoading: false,
           errorMessage: error.message
         })
-        setBtnDisabled(false)
+      })
+      .finally(() => {
+        updateBtnStatus()
       })
   }
 

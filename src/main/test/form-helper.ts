@@ -18,6 +18,11 @@ export const checkIfElementExists = (sut: RenderResult, fieldName: string): void
   expect(el).toBeTruthy()
 }
 
+export const checkThatElementDoesNotExists = (sut: RenderResult, fieldName: string): void => {
+  const el = sut.container.querySelector(fieldName)
+  expect(el).toBeNull()
+}
+
 export const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
   const el = sut.container.querySelector(fieldName) as HTMLElement
   expect(el.textContent).toBe(text)
@@ -63,7 +68,6 @@ export const testErrorForElement = async (sut: RenderResult,
   const element = sut.container.querySelector(selector) as HTMLInputElement
 
   await waitFor(async () => sut.container.querySelector('.error-container'))
-  console.log(element.innerHTML)
 
   expect(element.innerHTML).toContain(expectedValue)
 }

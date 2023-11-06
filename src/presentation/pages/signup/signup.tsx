@@ -11,15 +11,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { FormContext } from '@/presentation/contexts'
-import { type IAccountCreation } from '@/domain/usecases'
+import {
+  type ISaveAccessToken,
+  type IAccountCreation
+} from '@/domain/usecases'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 
 type Props = {
   validation: IValidation
   accountCreation: IAccountCreation
+  saveAccessToken: ISaveAccessToken
 }
 
-const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken }: Props) => {
   const { t } = useTranslation()
   const mainPageUrl: string = '/'
   const loginPageUrl = '/login'
@@ -54,19 +58,16 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
   ])
 
   const updateBtnStatus = (): void => {
-    if (!isEmpty(name) &&
+    const isFormValid = !isEmpty(name) &&
       !isEmpty(email) &&
       !isEmpty(pwd) &&
       !isEmpty(pwdConfirm) &&
       isEmpty(nameError) &&
       isEmpty(emailError) &&
       isEmpty(pwdError) &&
-      isEmpty(pwdConfirmError)) {
-      setBtnDisabled(true)
-      return
-    }
+      isEmpty(pwdConfirmError)
 
-    setBtnDisabled(false)
+    setBtnDisabled(isFormValid)
   }
 
   const handleNameOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -107,8 +108,9 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
       password: pwd,
       passwordConfimation: pwdConfirm
     })
-      .then((account) => {
+      .then(async (account) => {
         if (!!account && (account.accessToken.trim() !== '')) {
+          saveAccessToken.save(account.accessToken)
           navigate(loginPageUrl)
         } else {
           throw new UnexpectedError()
@@ -119,7 +121,9 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
           isLoading: false,
           errorMessage: error.message
         })
-        setBtnDisabled(false)
+      })
+      .finally(() => {
+        updateBtnStatus()
       })
   }
 
@@ -185,14 +189,14 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation }: Props) => {
           </button>
 
           <Link
-            className={Styles.signup}
+            className={Styles['login-link']}
             to={loginPageUrl}
             onClick={goToLogin}>
             {t('login')}
           </Link>
 
           <Link
-            className={Styles.signup}
+            className={Styles['main-link']}
             to={mainPageUrl}
             onClick={goToMain}>
             MAIN PAGE

@@ -4,6 +4,6 @@ import { makeApiUrl } from '../../http/api-url-factory'
 import { makeAxiosHttpClient } from '../../http/axios-http-client-factory'
 
 export const makeAccountCreation = (): IAccountCreation => {
-  const apiUrl = makeApiUrl('/login')
+  const apiUrl = makeApiUrl('/signup')
   return new AccountCreation(apiUrl, makeAxiosHttpClient())
 }

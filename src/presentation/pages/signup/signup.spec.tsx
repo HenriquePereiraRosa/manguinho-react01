@@ -3,7 +3,8 @@ import {
   type RenderResult,
   render,
   cleanup,
-  fireEvent
+  fireEvent,
+  waitFor
 } from '@testing-library/react'
 import SignUp from './signup'
 import { ValidationStub } from '@/main/test/mock-validation'
@@ -23,6 +24,7 @@ import {
 import faker from '@faker-js/faker'
 import { t } from 'i18next'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
+import { act } from 'react-dom/test-utils'
 
 type SutTypes = {
   sut: RenderResult
@@ -58,7 +60,8 @@ const makeSut = (params?: SutParams): SutTypes => {
     <BrowserRouter>
       <SignUp
         validation={validationStub}
-        accountCreation={accountCreationSpy} />
+        accountCreation={accountCreationSpy}
+        saveAccessToken={saveAccessTokenMock} />
     </BrowserRouter >
   )
 
@@ -151,7 +154,7 @@ describe('SignUp Component', () => {
       nameStub,
       emailStub,
       pwdStub
-    } = doValidSubmit(sut)
+    } = await doValidSubmit(sut)
 
     expect(accountCreationSpy.params).toEqual({
       name: nameStub,
@@ -186,7 +189,75 @@ describe('SignUp Component', () => {
     doValidSubmit(sut)
 
     Helper.testErrorForElement(sut, '.error-container', error.message)
+    Helper.testChildCount(sut, '.error-container', 1)
   })
+
+  test('Should go to Login page', async () => {
+    const { sut } = makeSut()
+    const loginLink = sut.container.querySelector('.login-link') as HTMLElement
+
+    fireEvent.click(loginLink)
+    expect(mockedUsedNavigate.mock.lastCall).toContain('/login')
+  })
+
+  test('Should go to Main page', async () => {
+    const { sut } = makeSut()
+    const loginLink = sut.container.querySelector('.main-link') as HTMLElement
+
+    fireEvent.click(loginLink)
+    expect(mockedUsedNavigate.mock.lastCall).toContain('/')
+  })
+
+  test('Should LogIn on AccountCreation sucess', async () => {
+    const { sut, accountCreationSpy, saveAccessTokenMock } = makeSut()
+
+    act(async () => {
+      await doValidSubmit(sut)
+
+      expect(saveAccessTokenMock.accessToken).toBe(accountCreationSpy.account.accessToken)
+      expect(location.pathname).toBe('/')
+    })
+  })
+
+  // TODO: check why the mock is not returning the error
+  // test('Should present error if SaveAccessToken fails', async () => {
+  //   const {
+  //     sut,
+  //     saveAccessTokenMock
+  //   } = makeSut()
+  //   const error = new InvalidCredentialsError()
+
+  //   jest.spyOn(saveAccessTokenMock, 'save')
+  //     .mockReturnValueOnce(Promise.reject(error))
+
+  //   // act(async () => {
+  //     await doValidSubmit(sut)
+
+  //     Helper.testElementText(sut, 'error-container', error.message)
+  //     Helper.testChildCount(sut, 'error-container', 1)
+  //   // })
+  // })
+
+  // test('Should go to Signup page', async () => {
+  //   const { container } = makeSut()
+  //   const signupLink = container.querySelector('.signup') as HTMLElement
+
+  //   fireEvent.click(signupLink)
+  //   expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
+  // })
+
+  // test('Should present error if Authenticaton return void data', async () => {
+  //   const error = new UnexpectedError()
+  //   const { container, authenticationSpy } = makeSut()
+  //   jest.spyOn(authenticationSpy, 'doAuth')
+  //     .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
+  //   doSubmit(container)
+
+  //   await waitFor(async () => container.querySelector('.error-container'))
+
+  //   const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+  //   expect(formLoginStatus.innerHTML).toContain(error.message)
+  // })
 })
 
 function populateAllFields(sut: RenderResult, values?: PopulateParams): void {
@@ -201,12 +272,12 @@ function populateAllFields(sut: RenderResult, values?: PopulateParams): void {
   Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdConfirmStub)
 }
 
-function doValidSubmit(sut: RenderResult): {
+async function doValidSubmit(sut: RenderResult): Promise<{
   nameStub
   emailStub
   pwdStub
   pwdConfirmStub
-} {
+}> {
   const nameStub = faker.internet.userName()
   const emailStub = faker.internet.email()
   const pwdStub = faker.internet.password()
@@ -221,6 +292,8 @@ function doValidSubmit(sut: RenderResult): {
 
   const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
   fireEvent.click(btnSubmit)
+
+  await waitFor(() => sut.container.querySelector('.form'))
 
   return {
     nameStub,
