@@ -16,6 +16,7 @@ import {
   type IAccountCreation
 } from '@/domain/usecases'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
+import ButtonSubmit from '@/presentation/components/buttons/button-submit/button-submit'
 
 type Props = {
   validation: IValidation
@@ -180,13 +181,13 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
             value={pwdConfirm}
             error-message={pwdConfirmError} />
 
-          <button
+          <ButtonSubmit
             className={Styles['button-submit']}
             type="submit"
-            disabled={!btnDisabled}
-            onClick={handleSubmit} >
-            {t('enter')}
-          </button>
+            disabled={btnDisabled}
+            onClick={handleSubmit}>
+            {t('subscribe')}
+          </ButtonSubmit>
 
           <Link
             className={Styles['login-link']}

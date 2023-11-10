@@ -16,6 +16,7 @@ import {
   type IAuthentication,
   type ISaveAccessToken
 } from '@/domain/usecases'
+import ButtonSubmit from '@/presentation/components/buttons/button-submit/button-submit'
 
 type Props = {
   validation: IValidation
@@ -123,13 +124,13 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             value={pwd}
             error-message={pwdError} />
 
-          <button
+          <ButtonSubmit
             className={Styles['button-submit']}
             type="submit"
-            disabled={!btnDisabled}
-            onClick={handleSubmit} >
+            disabled={btnDisabled}
+            onClick={handleSubmit}>
             {t('enter')}
-          </button>
+          </ButtonSubmit>
 
           <Link
             className={Styles.signup}
