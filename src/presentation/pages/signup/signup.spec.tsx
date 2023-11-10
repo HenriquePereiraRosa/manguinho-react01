@@ -4,7 +4,8 @@ import {
   render,
   cleanup,
   fireEvent,
-  waitFor
+  waitFor,
+  act
 } from '@testing-library/react'
 import SignUp from './signup'
 import { ValidationStub } from '@/main/test/mock-validation'
@@ -24,7 +25,6 @@ import {
 import faker from '@faker-js/faker'
 import { t } from 'i18next'
 import { InvalidParametersError } from '@/domain/errors/invalid-perameters-error'
-import { act } from 'react-dom/test-utils'
 
 type SutTypes = {
   sut: RenderResult
@@ -154,7 +154,7 @@ describe('SignUp Component', () => {
       nameStub,
       emailStub,
       pwdStub
-    } = await doValidSubmit(sut)
+    } = doValidSubmit(sut)
 
     expect(accountCreationSpy.params).toEqual({
       name: nameStub,
@@ -212,50 +212,26 @@ describe('SignUp Component', () => {
     const { sut, accountCreationSpy, saveAccessTokenMock } = makeSut()
 
     act(async () => {
-      await doValidSubmit(sut)
+      doValidSubmit(sut)
+      await waitFor(() => sut.container.querySelector('.form'))
 
       expect(saveAccessTokenMock.accessToken).toBe(accountCreationSpy.account.accessToken)
       expect(location.pathname).toBe('/')
     })
   })
-
-  // TODO: check why the mock is not returning the error
-  // test('Should present error if SaveAccessToken fails', async () => {
-  //   const {
-  //     sut,
-  //     saveAccessTokenMock
-  //   } = makeSut()
-  //   const error = new InvalidCredentialsError()
-
-  //   jest.spyOn(saveAccessTokenMock, 'save')
-  //     .mockReturnValueOnce(Promise.reject(error))
-
-  //   // act(async () => {
-  //     await doValidSubmit(sut)
-
-  //     Helper.testElementText(sut, 'error-container', error.message)
-  //     Helper.testChildCount(sut, 'error-container', 1)
-  //   // })
-  // })
-
-  // test('Should go to Signup page', async () => {
-  //   const { container } = makeSut()
-  //   const signupLink = container.querySelector('.signup') as HTMLElement
-
-  //   fireEvent.click(signupLink)
-  //   expect(mockedUsedNavigate).toHaveBeenCalledWith('/signup')
-  // })
-
+  // TODO: check why
   // test('Should present error if Authenticaton return void data', async () => {
   //   const error = new UnexpectedError()
-  //   const { container, authenticationSpy } = makeSut()
-  //   jest.spyOn(authenticationSpy, 'doAuth')
+  //   const { sut, accountCreationSpy } = makeSut()
+  //   jest.spyOn(accountCreationSpy, 'create')
   //     .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
-  //   doSubmit(container)
 
-  //   await waitFor(async () => container.querySelector('.error-container'))
+  //   // act(async () => {
+  //   doValidSubmit(sut)
+  //   await waitFor(() => sut.container.querySelector('.form'))
 
-  //   const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+  //   // })
+  //   const formLoginStatus = sut.container.querySelector('.error-container') as HTMLElement
   //   expect(formLoginStatus.innerHTML).toContain(error.message)
   // })
 })
@@ -272,12 +248,12 @@ function populateAllFields(sut: RenderResult, values?: PopulateParams): void {
   Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdConfirmStub)
 }
 
-async function doValidSubmit(sut: RenderResult): Promise<{
+function doValidSubmit(sut: RenderResult): {
   nameStub
   emailStub
   pwdStub
   pwdConfirmStub
-}> {
+} {
   const nameStub = faker.internet.userName()
   const emailStub = faker.internet.email()
   const pwdStub = faker.internet.password()
@@ -292,8 +268,6 @@ async function doValidSubmit(sut: RenderResult): Promise<{
 
   const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
   fireEvent.click(btnSubmit)
-
-  await waitFor(() => sut.container.querySelector('.form'))
 
   return {
     nameStub,
