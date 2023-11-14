@@ -125,8 +125,6 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             error-message={pwdError} />
 
           <ButtonSubmit
-            className={Styles['button-submit']}
-            type="submit"
             disabled={btnDisabled}
             onClick={handleSubmit}>
             {t('enter')}

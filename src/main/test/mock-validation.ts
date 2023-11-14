@@ -2,11 +2,11 @@ import { type IValidation } from '@/data/protocols/validation/validation'
 
 export class ValidationStub implements IValidation {
   errorMessage: string
-  type: string
+  field: string
   value: string
 
-  validate (type: string, value: string): string {
-    this.type = type
+  validate (field: string, value: string): string {
+    this.field = field
     this.value = value
     return this.errorMessage
   }

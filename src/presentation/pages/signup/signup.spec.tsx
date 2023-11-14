@@ -34,10 +34,10 @@ type SutTypes = {
 }
 
 type PopulateParams = {
-  name: string
-  email: string
-  password: string
-  passwordConfimation: string
+  name?: string
+  email?: string
+  password?: string
+  passwordConfimation?: string
 }
 
 type SutParams = {
@@ -96,7 +96,7 @@ describe('SignUp Component', () => {
     const validationError = 'Any Error Message'
     const { sut, validationStub } = makeSut({ errorMessage: validationError })
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_NAME, 'John Doe')
+    Helper.populateField(sut, INPUT_SELECTOR_NAME, 'John Doe')
 
     expect(validationStub.errorMessage).toBe(validationError)
     Helper.testErrorForInput(sut, INPUT_SELECTOR_NAME, 'error-message', validationError)
@@ -106,7 +106,7 @@ describe('SignUp Component', () => {
     const validationError = 'Any Error Message'
     const { sut, validationStub } = makeSut({ errorMessage: validationError })
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL)
+    Helper.populateField(sut, INPUT_SELECTOR_EMAIL)
 
     expect(validationStub.errorMessage).toBe(validationError)
     Helper.testErrorForInput(sut, INPUT_SELECTOR_EMAIL, 'error-message', validationError)
@@ -116,7 +116,7 @@ describe('SignUp Component', () => {
     const validationError = 'Any Error Message'
     const { sut, validationStub } = makeSut({ errorMessage: validationError })
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_PWD)
+    Helper.populateField(sut, INPUT_SELECTOR_PWD)
 
     expect(validationStub.errorMessage).toBe(validationError)
     Helper.testErrorForInput(sut, INPUT_SELECTOR_PWD, 'error-message', validationError)
@@ -126,7 +126,7 @@ describe('SignUp Component', () => {
     const validationError = 'Any Error Message'
     const { sut, validationStub } = makeSut({ errorMessage: validationError })
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM)
+    Helper.populateField(sut, INPUT_SELECTOR_PWD_CONFIRM)
 
     expect(validationStub.errorMessage).toBe(validationError)
     Helper.testErrorForInput(sut, INPUT_SELECTOR_PWD_CONFIRM, 'error-message', validationError)
@@ -143,7 +143,7 @@ describe('SignUp Component', () => {
   test('Should show Spinner on valid Submit', async () => {
     const { sut } = makeSut()
 
-    doValidSubmit(sut)
+    doSubmit(sut)
     Helper.checkIfElementExists(sut, '.loader')
   })
 
@@ -154,7 +154,7 @@ describe('SignUp Component', () => {
       nameStub,
       emailStub,
       pwdStub
-    } = doValidSubmit(sut)
+    } = doSubmit(sut)
 
     expect(accountCreationSpy.params).toEqual({
       name: nameStub,
@@ -166,9 +166,9 @@ describe('SignUp Component', () => {
 
   test('Should not be able to click btn Submit multiple times', async () => {
     const { sut, accountCreationSpy } = makeSut()
-    doValidSubmit(sut)
-    doValidSubmit(sut)
-    doValidSubmit(sut)
+    doSubmit(sut)
+    doSubmit(sut)
+    doSubmit(sut)
 
     expect(accountCreationSpy.callsCount).toBe(1)
   })
@@ -176,7 +176,7 @@ describe('SignUp Component', () => {
   test('Should not call AccountCreation if form is invalid', () => {
     const errorMessage = t('error-msg-mandatory-field')
     const { sut, accountCreationSpy } = makeSut({ errorMessage })
-    doValidSubmit(sut)
+    doSubmit(sut)
 
     expect(accountCreationSpy.callsCount).toBe(0)
   })
@@ -186,7 +186,7 @@ describe('SignUp Component', () => {
     const { sut, accountCreationSpy } = makeSut()
     jest.spyOn(accountCreationSpy, 'create')
       .mockReturnValueOnce(Promise.reject(error))
-    doValidSubmit(sut)
+    doSubmit(sut)
 
     Helper.testErrorForElement(sut, '.error-container', error.message)
     Helper.testChildCount(sut, '.error-container', 1)
@@ -212,13 +212,14 @@ describe('SignUp Component', () => {
     const { sut, accountCreationSpy, saveAccessTokenMock } = makeSut()
 
     act(async () => {
-      doValidSubmit(sut)
+      doSubmit(sut)
       await waitFor(() => sut.container.querySelector('.form'))
 
       expect(saveAccessTokenMock.accessToken).toBe(accountCreationSpy.account.accessToken)
       expect(location.pathname).toBe('/')
     })
   })
+
   // TODO: check why
   // test('Should present error if Authenticaton return void data', async () => {
   //   const error = new UnexpectedError()
@@ -242,22 +243,22 @@ function populateAllFields(sut: RenderResult, values?: PopulateParams): void {
   const pwdStub = values?.password ?? faker.internet.password()
   const pwdConfirmStub = values?.passwordConfimation ?? faker.internet.password()
 
-  Helper.populateField(sut.container, INPUT_SELECTOR_NAME, nameStub)
-  Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL, emailStub)
-  Helper.populateField(sut.container, INPUT_SELECTOR_PWD, pwdStub)
-  Helper.populateField(sut.container, INPUT_SELECTOR_PWD_CONFIRM, pwdConfirmStub)
+  Helper.populateField(sut, INPUT_SELECTOR_NAME, nameStub)
+  Helper.populateField(sut, INPUT_SELECTOR_EMAIL, emailStub)
+  Helper.populateField(sut, INPUT_SELECTOR_PWD, pwdStub)
+  Helper.populateField(sut, INPUT_SELECTOR_PWD_CONFIRM, pwdConfirmStub)
 }
 
-function doValidSubmit(sut: RenderResult): {
+function doSubmit(sut: RenderResult, values?: PopulateParams): {
   nameStub
   emailStub
   pwdStub
   pwdConfirmStub
 } {
-  const nameStub = faker.internet.userName()
-  const emailStub = faker.internet.email()
-  const pwdStub = faker.internet.password()
-  const pwdConfirmStub = pwdStub
+  const nameStub = values?.name ?? faker.internet.userName()
+  const emailStub = values?.email ?? faker.internet.email()
+  const pwdStub = values?.password ?? faker.internet.password()
+  const pwdConfirmStub = values?.passwordConfimation ?? pwdStub
 
   populateAllFields(sut, {
     name: nameStub,

@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { type RenderResult, fireEvent, waitFor } from '@testing-library/react'
 
-export function populateField(container: HTMLElement, selector: string, value?: string): string {
+export function populateField(sut: RenderResult, selector: string, value?: string): string {
   const fieldValueStub = value ?? faker.random.word()
-  const resultField = container.querySelector(selector)
+  const resultField = sut.container.querySelector(selector)
   if (!resultField) {
-    console.error(container.innerHTML)
+    console.error(sut.container.innerHTML)
     throw Error('form-helper: rendered field not found')
   }
 

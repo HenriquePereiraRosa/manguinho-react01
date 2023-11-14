@@ -3,11 +3,14 @@ import type { IFieldValidation } from '../../protocols/field-validation'
 
 export class FieldsEqualityValidation implements IFieldValidation {
   constructor(
-    readonly fieldName: string,
-    private readonly valueToCompare: string) { }
+    readonly field: string,
+    private readonly fieldToCompare: string) { }
 
-  validate(value: string): Error | null {
-    if (value === this.valueToCompare) {
+  validate(values: string[]): Error | null {
+    const value = values[0]
+    const valueToCompare = values[1]
+
+    if (value === valueToCompare) {
       return null
     }
 

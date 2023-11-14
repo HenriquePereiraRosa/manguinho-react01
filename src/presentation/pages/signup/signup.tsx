@@ -91,7 +91,7 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
 
   const handlePwdConfirmOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value
-    setPwdConfirmError(validation.validate('password-confirmation', value))
+    setPwdConfirmError(validation.validate('password-confirmation', [pwd, value]))
     setPwdConfirm(value)
   }
 
@@ -182,11 +182,9 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
             error-message={pwdConfirmError} />
 
           <ButtonSubmit
-            className={Styles['button-submit']}
-            type="submit"
             disabled={btnDisabled}
             onClick={handleSubmit}>
-            {t('subscribe')}
+            {t('signup')}
           </ButtonSubmit>
 
           <Link

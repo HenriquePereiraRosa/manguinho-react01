@@ -4,6 +4,7 @@ import { MaxLengthValidation } from '../validators/max-length/max-length-validat
 import { MinLengthValidation } from '../validators/min-length/min-length-validation'
 import { RequiredFieldValidation } from '../validators/required-fields/required-field-validation'
 import { NameValidation } from '../validators/name/name-validation'
+import { FieldsEqualityValidation } from '../validators/fields-equality/fields-equality-validation'
 
 export class ValidationBuilder {
   private constructor(
@@ -37,6 +38,11 @@ export class ValidationBuilder {
 
   max(length: number): ValidationBuilder {
     this.validations.push(new MaxLengthValidation(this.fieldName, length))
+    return this
+  }
+
+  sameAs (fieldToCompare: string): ValidationBuilder {
+    this.validations.push(new FieldsEqualityValidation(this.fieldName, fieldToCompare))
     return this
   }
 

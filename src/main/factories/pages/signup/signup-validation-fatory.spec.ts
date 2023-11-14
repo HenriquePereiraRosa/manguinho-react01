@@ -6,10 +6,10 @@ describe('LoginValidationFactory', () => {
   it('Should produce ValidationComposite with correct Validators', async () => {
     const composite = makeSignUpValidation()
     expect(composite).toEqual(ValidationComposite.build([
-      ...ValidationBuilder.field('name').required().name().min(5).max(100).build(),
+      ...ValidationBuilder.field('name').required().name().min(3).max(100).build(),
       ...ValidationBuilder.field('email').required().email().build(),
       ...ValidationBuilder.field('password').required().min(5).build(),
-      ...ValidationBuilder.field('password-confirmation').required().min(5).build()
+      ...ValidationBuilder.field('password-confirmation').required().sameAs('password').build()
     ]))
   })
 })

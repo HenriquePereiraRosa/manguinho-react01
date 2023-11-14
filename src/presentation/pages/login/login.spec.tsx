@@ -1,10 +1,9 @@
 import React from 'react'
 import {
-  type RenderResult,
-  render,
-  cleanup,
   fireEvent,
-  waitFor
+  render,
+  waitFor,
+  type RenderResult
 } from '@testing-library/react'
 import Login from './login'
 import { t } from 'i18next'
@@ -64,7 +63,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 describe('Login Component', () => {
-  afterEach(cleanup)
+  // afterEach(cleanup)
 
   test('Should not render FormStatus errors on start', () => {
     const { sut } = makeSut()
@@ -79,17 +78,17 @@ describe('Login Component', () => {
   })
 
   test('Should call Validation with correct email value', () => {
-    const { container, validationStub } = makeSut()
+    const { sut, validationStub } = makeSut()
 
-    const emailStub = Helper.populateField(container,
+    const emailStub = Helper.populateField(sut,
       'input[type="email"]',
       faker.internet.email())
 
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-check')
     const faCheckDiv1 = inputStatuses[1]
 
-    expect(validationStub.type).toBe('email')
+    expect(validationStub.field).toBe('email')
     expect(validationStub.value).toBe(emailStub)
     expect(inputStatuses.length).toBeGreaterThan(0)
 
@@ -99,42 +98,42 @@ describe('Login Component', () => {
 
   test('Should show email error message if Email Validation fails', () => {
     const errorMessage = t('error-msg-mandatory-field')
-    const { container, validationStub } = makeSut({ errorMessage })
+    const { sut, validationStub } = makeSut({ errorMessage })
 
-    const emailStub = Helper.populateField(container, 'input[type="email"]', faker.internet.email())
+    const emailStub = Helper.populateField(sut, 'input[type="email"]', faker.internet.email())
 
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv0 = inputStatuses[0].querySelector('.fa-error')
 
-    expect(validationStub.type).toBe('email')
+    expect(validationStub.field).toBe('email')
     expect(validationStub.value).toBe(emailStub)
     expect(inputStatuses[0].title).toBe(t('error-msg-mandatory-field'))
     expect(faCheckDiv0).not.toBeNull()
   })
 
   test('Should call Validation with correct password value', () => {
-    const { container, validationStub } = makeSut()
+    const { sut, validationStub } = makeSut()
 
-    const pwdStub = Helper.populateField(container, 'input[type="password"]', ' ')
+    const pwdStub = Helper.populateField(sut, 'input[type="password"]', ' ')
 
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
     const faCheckDiv1 = inputStatuses[0].querySelector('.fa-check')
 
-    expect(validationStub.type).toBe('password')
+    expect(validationStub.field).toBe('password')
     expect(validationStub.value).toBe(pwdStub)
     expect(faCheckDiv1).not.toBeNull()
   })
 
   test('Should show Password error message if Password Validation fails', () => {
     const errorMessage = t('error-msg-mandatory-field')
-    const { sut, container, validationStub } = makeSut({ errorMessage })
+    const { sut, validationStub } = makeSut({ errorMessage })
 
-    const pwdStub = Helper.populateField(container, 'input[type="password"]', ' ')
+    const pwdStub = Helper.populateField(sut, 'input[type="password"]', ' ')
 
     Helper.testFieldStatus(sut, '.fa-error', 1)
-    const inputStatuses = Array.from(container.querySelectorAll('.input-status')) as HTMLElement[]
+    const inputStatuses = Array.from(sut.container.querySelectorAll('.input-status')) as HTMLElement[]
 
-    expect(validationStub.type).toBe('password')
+    expect(validationStub.field).toBe('password')
     expect(validationStub.value).toBe(pwdStub)
     expect(inputStatuses[0].title).toBe(t('error-msg-mandatory-field'))
   })
@@ -142,23 +141,23 @@ describe('Login Component', () => {
   test('Should enable Submit button if form is valid', async () => {
     const { sut } = makeSut()
 
-    Helper.populateField(sut.container, INPUT_SELECTOR_EMAIL)
-    Helper.populateField(sut.container, INPUT_SELECTOR_PWD)
+    Helper.populateField(sut, INPUT_SELECTOR_EMAIL)
+    Helper.populateField(sut, INPUT_SELECTOR_PWD)
 
     const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
     expect(btnSubmit.disabled).toBe(false)
   })
 
   test('Should show Spinner on submit', () => {
-    const { container } = makeSut()
-    doSubmit(container)
-    const spinner = container.querySelector('.loader') as HTMLButtonElement
+    const { sut } = makeSut()
+    doSubmit(sut)
+    const spinner = sut.container.querySelector('.loader') as HTMLButtonElement
     expect(spinner).toBeTruthy()
   })
 
   test('Should call Authentication with correct values', async () => {
-    const { container, authenticationSpy } = makeSut()
-    const { emailStub, pwdStub } = doSubmit(container)
+    const { sut, authenticationSpy } = makeSut()
+    const { emailStub, pwdStub } = doSubmit(sut)
 
     expect(authenticationSpy.params).toEqual({
       email: emailStub,
@@ -167,44 +166,44 @@ describe('Login Component', () => {
   })
 
   test('Should not be able to click btn Submit multiple times', async () => {
-    const { container, authenticationSpy } = makeSut()
-    doSubmit(container)
-    doSubmit(container)
+    const { sut, authenticationSpy } = makeSut()
+    doSubmit(sut)
+    doSubmit(sut)
 
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
   test('Should not call Authenticaton if form is invalid', () => {
     const errorMessage = t('error-msg-mandatory-field')
-    const { container, authenticationSpy } = makeSut({ errorMessage })
-    doSubmit(container)
+    const { sut, authenticationSpy } = makeSut({ errorMessage })
+    doSubmit(sut)
 
     expect(authenticationSpy.callsCount).toBe(0)
   })
 
   test('Should present error if Authenticaton fails', async () => {
     const error = new InvalidCredentialsError()
-    const { container, authenticationSpy } = makeSut()
+    const { sut, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.reject(error))
-    doSubmit(container)
+    doSubmit(sut)
 
-    await waitFor(async () => container.querySelector('.error-container'))
+    await waitFor(async () => sut.container.querySelector('.error-container'))
 
-    const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+    const formLoginStatus = sut.container.querySelector('.error-container') as HTMLElement
     expect(formLoginStatus.innerHTML).toContain(error.message)
   })
 
   test('Should call SaveAccessToken on Auth sucess', async () => {
     const {
-      container,
+      sut,
       authenticationSpy,
       saveAccessTokenMock
     } = makeSut()
 
-    doSubmit(container)
+    doSubmit(sut)
 
-    await waitFor(async () => container.querySelector('.form'))
+    await waitFor(async () => sut.container.querySelector('.form'))
 
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
     expect(location.pathname).toBe('/')
@@ -239,29 +238,29 @@ describe('Login Component', () => {
 
   test('Should present error if Authenticaton return void data', async () => {
     const error = new UnexpectedError()
-    const { container, authenticationSpy } = makeSut()
+    const { sut, authenticationSpy } = makeSut()
     jest.spyOn(authenticationSpy, 'doAuth')
       .mockReturnValueOnce(Promise.resolve({ accessToken: '' }))
-    doSubmit(container)
+    doSubmit(sut)
 
-    await waitFor(async () => container.querySelector('.error-container'))
+    await waitFor(async () => sut.container.querySelector('.error-container'))
 
-    const formLoginStatus = container.querySelector('.error-container') as HTMLElement
+    const formLoginStatus = sut.container.querySelector('.error-container') as HTMLElement
     expect(formLoginStatus.innerHTML).toContain(error.message)
   })
 })
 
-function populateEmailAndPwd(container: HTMLElement): { emailStub: string, pwdStub: string } {
+function populateEmailAndPwd(sut: RenderResult): { emailStub: string, pwdStub: string } {
   const emailStub = faker.internet.email()
   const pwdStub = faker.internet.password()
-  Helper.populateField(container, INPUT_SELECTOR_EMAIL, emailStub)
-  Helper.populateField(container, INPUT_SELECTOR_PWD, pwdStub)
+  Helper.populateField(sut, INPUT_SELECTOR_EMAIL, emailStub)
+  Helper.populateField(sut, INPUT_SELECTOR_PWD, pwdStub)
   return { emailStub, pwdStub }
 }
 
-function doSubmit(container: HTMLElement): { emailStub: string, pwdStub: string } {
-  const { emailStub, pwdStub } = populateEmailAndPwd(container)
-  const btnSubmit = container.querySelector('.button-submit') as HTMLButtonElement
+function doSubmit(sut: RenderResult): { emailStub: string, pwdStub: string } {
+  const { emailStub, pwdStub } = populateEmailAndPwd(sut)
+  const btnSubmit = sut.container.querySelector('.button-submit') as HTMLButtonElement
   fireEvent.click(btnSubmit)
 
   return { emailStub, pwdStub }
