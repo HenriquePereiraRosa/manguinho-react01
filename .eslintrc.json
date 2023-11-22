@@ -17,9 +17,16 @@
     "sourceType": "module",
     "ecmaFeatures": { "jsx": true }
   },
-  "env": { "es6": true },
-  "plugins": ["react"],
-  "ignorePatterns": ["node_modules/"],
+  "env": {
+     "es6": true,
+     "cypress/globals": true
+  },
+  "plugins": ["react", "cypress"],
+  "ignorePatterns": [
+    "node_modules/",
+    "src/main/tests/e2e/cypress/fixtures/**",
+    "cypress/**"
+  ],
   "rules": {
     "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "@typescript-eslint/consistent-type-definitions": "off",

@@ -109,3 +109,6 @@ dist
 
 .pnp.cjs
 yarn.lock
+
+
+cypress

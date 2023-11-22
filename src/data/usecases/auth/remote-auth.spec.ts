@@ -8,7 +8,7 @@ import {
   mockAccountModel,
   mockAuthParams,
   PostClientSpy
-} from '@/main/test'
+} from '@/main/tests'
 import { RemoteAuth } from './remote-auth'
 import { faker } from '@faker-js/faker'
 import { type IAuthenticationParams } from '@/domain/usecases/'

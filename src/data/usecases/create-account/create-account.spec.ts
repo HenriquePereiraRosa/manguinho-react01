@@ -1,7 +1,7 @@
 import { type IAccountCreationParams } from '@/domain/usecases'
 import { AccountCreation } from './create-account'
 import { type AccountModel } from '@/domain/model/account-model'
-import { PostClientSpy, mockAccountModel, mockCreateAccoutParams } from '@/main/test'
+import { PostClientSpy, mockAccountModel, mockCreateAccoutParams } from '@/main/tests'
 import faker from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { HttpStatusCode } from '@/data/protocols/http'

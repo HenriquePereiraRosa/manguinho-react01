@@ -9,7 +9,7 @@ import {
   AccountCreationSpy,
   Helper,
   SaveAccessTokenMock
-} from '@/main/test'
+} from '@/main/tests'
 import { BrowserRouter } from 'react-router-dom'
 import {
   INPUT_SELECTOR_EMAIL,

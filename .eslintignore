@@ -112,3 +112,7 @@ public
 tsconfig.json
 server.js
 webpack.*.js
+
+# cypress files
+src/main/tests/e2e/cypress/**.js
+cypress.config.ts

@@ -8,12 +8,12 @@ import {
 import Login from './login'
 import { t } from 'i18next'
 import faker from '@faker-js/faker'
-import { ValidationStub } from '@/main/test/mock-validation'
+import { ValidationStub } from '@/main/tests/mock-validation'
 import {
   AuthenticationSpy,
   Helper,
   SaveAccessTokenMock
-} from '@/main/test'
+} from '@/main/tests'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { BrowserRouter } from 'react-router-dom'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'

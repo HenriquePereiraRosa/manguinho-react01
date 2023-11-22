@@ -31,9 +31,12 @@
   },
   "include": [
     "src",
-    "tests",
     "jest.config.js",
     "webpack.common.js"
   ],
-  "exclude": ["tests/e2e/cypress"]
+  "ignorePatterns": [
+    "src/main/tests/e2e/cypress/fixtures/**",
+    "cypress/**"
+  ],
+  "exclude": ["src/main/tests/e2e/cypress"]
 }

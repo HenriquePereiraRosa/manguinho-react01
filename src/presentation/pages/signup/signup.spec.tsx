@@ -8,12 +8,12 @@ import {
   act
 } from '@testing-library/react'
 import SignUp from './signup'
-import { ValidationStub } from '@/main/test/mock-validation'
+import { ValidationStub } from '@/main/tests/mock-validation'
 import {
   AccountCreationSpy,
   Helper,
   SaveAccessTokenMock
-} from '@/main/test'
+} from '@/main/tests'
 import { BrowserRouter } from 'react-router-dom'
 import {
   CLASS_BTN_SELECTOR_SUBMIT,
