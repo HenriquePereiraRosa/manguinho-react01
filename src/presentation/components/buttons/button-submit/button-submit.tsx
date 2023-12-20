@@ -6,6 +6,7 @@ import { t } from 'i18next'
 const ButtonSubmit: React.FC<ButtonProps> = (props: ButtonProps) => {
   return (
     <button
+      data-testid="btn-submit"
       className={Styles['button-submit']}
       type="submit"
       disabled={!props.disabled}

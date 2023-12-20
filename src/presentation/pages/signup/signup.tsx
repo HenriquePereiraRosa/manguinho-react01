@@ -47,7 +47,7 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
   const [emailError, setEmailError] = useState<string>('')
   const [pwdError, setPwdError] = useState<string>('')
   const [pwdConfirmError, setPwdConfirmError] = useState<string>('')
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
 
   useEffect(() => {
     updateBtnStatus()
@@ -59,16 +59,19 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
   ])
 
   const updateBtnStatus = (): void => {
-    const isFormValid = !isEmpty(name) &&
+    if (!isEmpty(name) &&
       !isEmpty(email) &&
       !isEmpty(pwd) &&
       !isEmpty(pwdConfirm) &&
       isEmpty(nameError) &&
       isEmpty(emailError) &&
       isEmpty(pwdError) &&
-      isEmpty(pwdConfirmError)
+      isEmpty(pwdConfirmError)) {
+      setBtnDisabled(true)
+      return
+    }
 
-    setBtnDisabled(isFormValid)
+    setBtnDisabled(false)
   }
 
   const handleNameOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -112,6 +115,13 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
       .then(async (account) => {
         if (!!account && (account.accessToken.trim() !== '')) {
           saveAccessToken.save(account.accessToken)
+            .catch((error) => {
+              setFormState({
+                isLoading: false,
+                errorMessage: error.message
+              })
+            })
+
           navigate(loginPageUrl)
         } else {
           throw new UnexpectedError()

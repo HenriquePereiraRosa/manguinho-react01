@@ -24,7 +24,7 @@
   "plugins": ["react", "cypress"],
   "ignorePatterns": [
     "node_modules/",
-    "src/main/tests/e2e/cypress/fixtures/**",
+    "tests_e2e/cypress/fixtures/**",
     "cypress/**"
   ],
   "rules": {

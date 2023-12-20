@@ -47,13 +47,16 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
     updateBtnStatus()
   }, [email, pwd])
 
-  const updateBtnStatus = (): void => {
-    const isFormValid = (!isEmpty(email) &&
+  const updateBtnStatus = async (): Promise<void> => {
+    if (!isEmpty(email) &&
       !isEmpty(pwd) &&
       isEmpty(emailError) &&
-      isEmpty(pwdError))
+      isEmpty(pwdError)) {
+      setBtnDisabled(true)
+      return
+    }
 
-    setBtnDisabled(isFormValid)
+    setBtnDisabled(false)
   }
 
   const handleEmailOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -80,6 +83,13 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
       .then((account) => {
         if (!!account && (account.accessToken.trim() !== '')) {
           saveAccessToken.save(account.accessToken)
+            .catch((error) => {
+              setFormState({
+                isLoading: false,
+                errorMessage: error.message
+              })
+            })
+
           navigate(mainPageUrl)
         } else {
           throw new UnexpectedError()
@@ -110,6 +120,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <h2>{t('login-title')}</h2>
 
           <InputRoot
+            data-testid="email"
             type="email"
             placeholder={placeholderEmail}
             onChange={handleEmailOnChange}
@@ -117,14 +128,15 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             error-message={emailError} />
 
           <InputRoot
+            data-testid="password"
             type="password"
-            name="password"
             placeholder={placeholderPwd}
             onChange={handlePwdOnChange}
             value={pwd}
             error-message={pwdError} />
 
           <ButtonSubmit
+            data-testid="button-submit"
             disabled={btnDisabled}
             onClick={handleSubmit}>
             {t('enter')}

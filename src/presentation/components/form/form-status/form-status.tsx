@@ -7,7 +7,9 @@ const FormStatus: React.FC = () => {
   const { isLoading, errorMessage } = useContext(FormContext)
 
   return (
-    <div className={Styles['error-container']}>
+    <div
+      data-testid="error-container"
+      className={Styles['error-container']}>
       {isLoading && !errorMessage && <CircleSpinner className={Styles.error} />}
       {errorMessage && <span className={Styles.error}>{errorMessage}</span>}
     </div>

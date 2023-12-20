@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "jsx": "react",
-    "rootDirs": ["src", "tests"],
+    "rootDirs": ["src", "tests_e2e"],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
@@ -32,11 +32,13 @@
   "include": [
     "src",
     "jest.config.js",
-    "webpack.common.js"
-  ],
+    "webpack.common.js",
+    "tests_e2e"  ],
   "ignorePatterns": [
-    "src/main/tests/e2e/cypress/fixtures/**",
+    "tests_e2e/cypress/fixtures/**",
+    "tests_e2e/cypress/support/**",
     "cypress/**"
   ],
-  "exclude": ["src/main/tests/e2e/cypress"]
+  "exclude": [
+    "tests_e2e/cypress"]
 }

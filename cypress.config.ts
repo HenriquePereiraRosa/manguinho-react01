@@ -6,7 +6,7 @@ export default defineConfig({
   e2e: {
     baseUrl: "http://localhost:8080",
     supportFile: false,
-    specPattern: "src/main/tests/e2e/cypress/integration-tests/**/*.cy.{js,jsx,ts,tsx}",
+    specPattern: "tests_e2e/cypress/integration-tests/**/*.cy.{js,jsx,ts,tsx}",
   },
 
   component: {

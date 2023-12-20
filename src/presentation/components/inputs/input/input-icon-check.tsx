@@ -5,7 +5,9 @@ import { type InputProps } from '@/domain/props/InputProps'
 
 const InputIconCheck: React.FC<InputProps> = (props: InputProps) => {
   return (
-    <span className={Styles['input-status']}>
+    <span
+      data-testid="input-icon-check"
+      className={Styles['input-status']}>
       <div className={Styles['fa-check']}>
         <FaCircleCheck width="1.5rem" />
       </div>
