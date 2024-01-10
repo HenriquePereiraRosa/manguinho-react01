@@ -111,4 +111,4 @@ dist
 yarn.lock
 
 
-cypress
+/cypress
