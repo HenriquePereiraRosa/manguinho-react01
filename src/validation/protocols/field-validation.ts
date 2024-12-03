@@ -1,4 +1,4 @@
 export interface IFieldValidation {
-  fieldName: string
-  validate: (value: string) => Error | null
+  field: string
+  validate: (value: string | string[]) => Error | null
 }

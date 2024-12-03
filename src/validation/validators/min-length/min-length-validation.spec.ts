@@ -1,10 +1,10 @@
 import { MinLengthFieldError } from '@/validation/errors'
 import { MinLengthValidation } from './min-length-validation'
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 const MIN_LENGTH: number = 8
 const makeSut = (): MinLengthValidation =>
-  new MinLengthValidation('field', MIN_LENGTH)
+  new MinLengthValidation(faker.database.column(), MIN_LENGTH)
 
 describe('EmailValidation', () => {
   test('Should return error if field is <= than Min', () => {
@@ -19,6 +19,13 @@ describe('EmailValidation', () => {
     const sut = makeSut()
     const stringGreaterThanMin = faker.random.alphaNumeric(MIN_LENGTH)
     const error = sut.validate(stringGreaterThanMin)
+
+    expect(error).toBeFalsy()
+  })
+
+  test('Should return falsy if field ius null', () => {
+    const sut = makeSut()
+    const error = sut.validate('')
 
     expect(error).toBeFalsy()
   })

@@ -7,7 +7,10 @@ const InputIconError: React.FC<InputProps> = (props: InputProps) => {
   const errormessage = props['error-message'] ?? ''
 
   return (
-    <span className={Styles['input-status']} title={errormessage}>
+    <span
+      data-testid="input-icon-error"
+      className={Styles['input-status']}
+      title={errormessage}>
       <div className={Styles['fa-error']}>
         <FaCircleError width="1.5rem" />
       </div>

@@ -1,6 +1,6 @@
 import { MaxLengthFieldError } from '@/validation/errors'
 import { MaxLengthValidation } from './max-length-validation'
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 const MAX_LENGTH: number = 8
 const makeSut = (): MaxLengthValidation =>

@@ -1,4 +1,3 @@
-
 export class TimeLog {
   logTime (param: Date): void {
     const delay: number = new Date().getTime() - param.getTime()

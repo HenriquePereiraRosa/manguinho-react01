@@ -3,9 +3,14 @@
   "enter": "Enter",
   "signup": "Sign up",
   "login": "Login",
+  "name-place-holder": "Type your Full Name (ie: Jhon Snow)",
   "email-place-holder": "Type your email",
   "pwd-place-holder": "Type your password",
+  "pwd-confirm-place-holder": "Confirm your password",
   "error-msg-mandatory-field": "Mandatory Field",
+  "error-msg-invalid-field": "Invalid Field",
+  "error-msg-chars-invalid": "Invalid Characters Inserted",
   "error-msg-max-length": "Field should be less than ",
-  "error-msg-min-length": "Field should be greater than "
+  "error-msg-min-length": "Field should be greater than ",
+  "fields-not-equals-error": "Fields are not equal"
 }

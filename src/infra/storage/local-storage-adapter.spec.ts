@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import 'jest-localstorage-mock'
 import { LocalStorageAdapter } from './local-storage-adapter'
 

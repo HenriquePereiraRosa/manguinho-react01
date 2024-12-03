@@ -1,6 +1,6 @@
 import { type IFieldValidation } from '@/validation/protocols/field-validation'
 import { ValidationComposite } from './validation-composite'
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   sut: ValidationComposite
@@ -9,17 +9,17 @@ type SutTypes = {
 class FieldValidationSpy implements IFieldValidation {
   public error: Error
 
-  constructor(readonly fieldName: string) { }
+  constructor(readonly field: string) { }
 
   validate(value: string): Error {
     return this.error
   }
 }
 
-const makeSut = (fieldNames: string[]): SutTypes => {
+const makeSut = (field: string[]): SutTypes => {
   const fieldValidationSpies = [
-    new FieldValidationSpy(fieldNames[0]),
-    new FieldValidationSpy(fieldNames[1])]
+    new FieldValidationSpy(field[0]),
+    new FieldValidationSpy(field[1])]
 
   const sut = new ValidationComposite(fieldValidationSpies)
 
@@ -35,11 +35,11 @@ const makeError = (): Error => {
 describe('RequiredFieldValidation', () => {
   test('Should return error if any validation fails', () => {
     const error = makeError()
-    const fieldNames = [faker.database.column(), faker.database.column()]
-    const { sut, fieldValidationSpies } = makeSut(fieldNames)
+    const field = [faker.database.column(), faker.database.column()]
+    const { sut, fieldValidationSpies } = makeSut(field)
     fieldValidationSpies[0].error = error
 
-    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
+    const errorSut = sut.validate(field[0], faker.word.conjunction(3))
 
     expect(errorSut).toBe(error.message)
   })
@@ -47,23 +47,23 @@ describe('RequiredFieldValidation', () => {
   test('Should stop validation on the first error', () => {
     const lError01 = makeError()
     const lError02 = makeError()
-    const fieldName = faker.database.column()
-    const fieldNames = [fieldName, fieldName]
-    const { sut, fieldValidationSpies } = makeSut(fieldNames)
+    const field = faker.database.column()
+    const fields = [field, field]
+    const { sut, fieldValidationSpies } = makeSut(fields)
     fieldValidationSpies[0].error = lError01
     fieldValidationSpies[1].error = lError02
 
-    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
+    const errorSut = sut.validate(fields[0], faker.word.conjunction(3))
 
     expect(errorSut).toBe(lError01.message)
   })
 
   test('Should pass if fields are valid', () => {
-    const fieldName = faker.database.column()
-    const fieldNames = [fieldName, fieldName]
-    const { sut } = makeSut(fieldNames)
+    const field = faker.database.column()
+    const fields = [field, field]
+    const { sut } = makeSut(fields)
 
-    const errorSut = sut.validate(fieldNames[0], faker.word.conjunction(3))
+    const errorSut = sut.validate(fields[0], faker.word.conjunction(3))
 
     expect(errorSut).toBeFalsy()
   })

@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const common = require('./webpack.common')
 const { merge } = require('webpack-merge')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -24,7 +25,12 @@ module.exports = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './template.dev.html' //todo: create a prod template
-    })
+      template: './template.dev.html', //todo: create a prod template
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    }),
+    new Dotenv({ path: './.env.prod', }),
   ]
 })

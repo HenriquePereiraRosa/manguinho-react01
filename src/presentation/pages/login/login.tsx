@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useState, useEffect } from 'react'
 import Styles from './login-styles.scss'
 import {
   Footer,
-  FormLoginStatus,
+  FormStatus,
   HeaderLogin,
   InputRoot
 } from '@/presentation/components'
@@ -12,8 +12,11 @@ import { type IValidation } from '@/data/protocols/validation/validation'
 import { isEmpty } from '@/domain/util/string'
 import { Link, useNavigate } from 'react-router-dom'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { type IAuthentication } from '@/domain/usecases/authentication/auth'
-import { type ISaveAccessToken } from '@/domain/usecases/authentication/save-access-token'
+import {
+  type IAuthentication,
+  type ISaveAccessToken
+} from '@/domain/usecases'
+import ButtonSubmit from '@/presentation/components/buttons/button-submit/button-submit'
 
 type Props = {
   validation: IValidation
@@ -44,7 +47,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
     updateBtnStatus()
   }, [email, pwd])
 
-  const updateBtnStatus = (): void => {
+  const updateBtnStatus = async (): Promise<void> => {
     if (!isEmpty(email) &&
       !isEmpty(pwd) &&
       isEmpty(emailError) &&
@@ -78,17 +81,28 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
     authentication.doAuth({ email, password: pwd })
       .then((account) => {
-        if (account) {
+        if (!!account && (account.accessToken.trim() !== '')) {
           saveAccessToken.save(account.accessToken)
+            .catch((error) => {
+              setFormState({
+                isLoading: false,
+                errorMessage: error.message
+              })
+            })
+
           navigate(mainPageUrl)
-        } else throw new UnexpectedError() // todo: add a personalized error here
+        } else {
+          throw new UnexpectedError()
+        }
       })
       .catch((error) => {
         setFormState({
           isLoading: false,
           errorMessage: error.message
         })
-        setBtnDisabled(false)
+      })
+      .finally(() => {
+        updateBtnStatus()
       })
   }
 
@@ -106,6 +120,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <h2>{t('login-title')}</h2>
 
           <InputRoot
+            data-testid="email"
             type="email"
             placeholder={placeholderEmail}
             onChange={handleEmailOnChange}
@@ -113,19 +128,19 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             error-message={emailError} />
 
           <InputRoot
+            data-testid="password"
             type="password"
             placeholder={placeholderPwd}
             onChange={handlePwdOnChange}
             value={pwd}
             error-message={pwdError} />
 
-          <button
-            className={Styles['button-submit']}
-            type="submit"
-            disabled={!btnDisabled}
-            onClick={handleSubmit} >
+          <ButtonSubmit
+            data-testid="button-submit"
+            disabled={btnDisabled}
+            onClick={handleSubmit}>
             {t('enter')}
-          </button>
+          </ButtonSubmit>
 
           <Link
             className={Styles.signup}
@@ -134,7 +149,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             {t('signup')}
           </Link>
 
-          <FormLoginStatus />
+          <FormStatus />
 
         </form>
       </FormContext.Provider>

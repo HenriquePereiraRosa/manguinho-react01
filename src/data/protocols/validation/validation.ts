@@ -1,3 +1,3 @@
 export interface IValidation {
-  validate: (fieldName: string, value: string) => string
+  validate: (field: string, value: string | string[]) => string
 }

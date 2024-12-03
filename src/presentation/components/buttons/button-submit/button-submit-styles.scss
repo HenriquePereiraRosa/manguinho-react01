@@ -1,0 +1,31 @@
+@import "./../../../styles/global-colors.scss";
+
+.button-submit {      
+  background-color: $primary-dark;
+  border-color: $primary-dark;
+  border: 0.15rem solid $color-button-off-dark;
+  border-radius: 0.85rem;
+  
+  min-width: fit-content;
+  margin-top: 1rem;
+  padding: 0.3rem 2rem;
+  
+  color: $white;
+  font-size: 1rem;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    border-color: $color-button-on-dark;
+  }
+
+  &:disabled {
+    background-color: $color-button-disabled-dark;
+    border-color: $color-button-disabled-dark;
+    
+    &:hover {
+      opacity: 0.8;
+      border-color: $color-button-disabled-dark;
+    }
+  }
+}

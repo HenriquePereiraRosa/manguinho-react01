@@ -109,6 +109,13 @@ public
 *.scss
 
 #config files
-tsconfig.json
 server.js
 webpack.*.js
+
+# cypress files
+tests_e2e/cypress/**.js
+tests_e2e/cypress/suport/**
+cypress.config.ts
+
+#JSON files
+*.json

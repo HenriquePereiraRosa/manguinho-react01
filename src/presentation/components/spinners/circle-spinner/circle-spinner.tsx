@@ -7,7 +7,8 @@ interface CircleSpinnerProps {
 
 const CircleSpinner: React.FC<CircleSpinnerProps> = (props) => {
   return (
-    <div>
+    <div
+      data-testid="spinner">
       <span className={[props.className, Styles.loader].join(' ')}></span>
     </div>
   )

@@ -10,7 +10,6 @@ export class AxiosHttpClient {
           body: response?.data
         }
       }).catch(error => {
-        console.log(error)
         return {
           statusCode: error.response?.status,
           body: error.response?.data

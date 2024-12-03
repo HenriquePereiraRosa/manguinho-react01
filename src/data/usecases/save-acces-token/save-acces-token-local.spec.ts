@@ -1,6 +1,6 @@
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import { SaveAccessTokenLocal } from './save-acces-token-local'
-import { SetStorageSpy } from '@/presentation/test/mock-storage'
+import { SetStorageSpy } from '@/main/tests'
 
 describe('SaveAccessTokenLocal', () => {
   it('Should call setStorage() with correct value', async () => {

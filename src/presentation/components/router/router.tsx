@@ -7,8 +7,8 @@ import {
 import { I18nextProvider } from 'react-i18next'
 import i18n from '@/infra/i18n/i18n'
 import Main from '@/presentation/pages/main/main'
-import SignUp from '@/presentation/pages/signup/signup'
 import { makeLogin } from '@/main/factories/pages/login/login-factory'
+import { makeSignUp } from '@/main/factories/pages/signup/signup-factory'
 
 const Router: React.FC = () => {
   return (
@@ -28,7 +28,7 @@ const Router: React.FC = () => {
 
           <Route
             path="/signup"
-            element={<SignUp />}
+            Component={makeSignUp}
           />
 
         </Routes>
