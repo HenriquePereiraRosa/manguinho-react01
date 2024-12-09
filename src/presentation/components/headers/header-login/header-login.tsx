@@ -8,7 +8,7 @@ const HeaderLogin: React.FC = (props) => {
     <header className={Styles.header}>
       <div>
         <Logo />
-        <h1> H8 - Clean React</h1>
+        <h1> Clean Architecture</h1>
       </div>
 
       <div className={Styles['language-switcher-button']}>

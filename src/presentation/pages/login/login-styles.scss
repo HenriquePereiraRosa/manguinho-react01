@@ -14,9 +14,18 @@
     align-self: center;
 
     width: 50vw;
+    transition: width 0.3s ease-in-out;
 
     background-color: $bg;
     color: $white;
+
+    @media (max-width: 768px) {
+      width: 90vw;
+    }
+
+    @media (min-width: 1440px) {
+      width: 25vw;
+    }
 
     h2 {
       color: $primary-light;
