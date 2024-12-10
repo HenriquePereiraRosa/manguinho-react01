@@ -1,0 +1,21 @@
+
+.form {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  width: 65vw;
+  max-width: 50rem;
+  transition: width 0.3s ease-in-out;
+  
+  @media (max-width: 768px) {
+    width: 90vw;
+  }
+
+  @media (min-width: 1440px) {
+    width: 40vw;
+  }
+
+  .link {
+    margin-top: .85rem;
+  }
+}

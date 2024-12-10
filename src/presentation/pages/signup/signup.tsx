@@ -17,6 +17,7 @@ import {
 } from '@/domain/usecases'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import ButtonSubmit from '@/presentation/components/buttons/button-submit/button-submit'
+import classNames from 'classnames'
 
 type Props = {
   validation: IValidation
@@ -151,12 +152,12 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
     <div className={Styles.main}>
       <HeaderLogin />
 
-      <div className={Styles.form}>
+      <form className={Styles.form}>
         <FormContext.Provider value={formState} >
 
           <div>
             <h1 className={Styles['main-text']}>
-              SIGNUP PAGE: (UNDER CONSTRUCTION)
+              SIGNUP PAGE
             </h1>
           </div>
 
@@ -198,23 +199,22 @@ const SignUp: React.FC<Props> = ({ validation, accountCreation, saveAccessToken 
           </ButtonSubmit>
 
           <Link
-            className={Styles['login-link']}
+            className={classNames(Styles['login-link'], Styles.link)}
             to={loginPageUrl}
             onClick={goToLogin}>
             {t('login')}
           </Link>
 
           <Link
-            className={Styles['main-link']}
+            className={[Styles['main-link'], Styles.link].join(' ')}
             to={mainPageUrl}
             onClick={goToMain}>
-            MAIN PAGE
-            {t('signup')}
+            {t('main')}
           </Link>
 
           <FormStatus />
         </FormContext.Provider>
-      </div>
+      </form>
 
       <Footer />
     </div >

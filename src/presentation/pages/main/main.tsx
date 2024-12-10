@@ -21,18 +21,20 @@ const Main: React.FC = () => {
     <div className={Styles.main}>
       <HeaderLogin />
 
-      <div>
+      <div className={Styles.form}>
         <h1 className={Styles['main-text']}>
-          THIS IS THE MAIN PAGE: (IN CONSTRUICTION)
+          THIS IS THE MAIN PAGE
+          <img className={Styles.img} src="/public/images/1920_kuehnenagelanchor.png" />
         </h1>
-      </div>
 
-      <Link
-        className={Styles.signup}
-        to={loginUrl}
-        onClick={goToLogin}>
-        {t('login')}
-      </Link>
+        <Link
+          className={Styles.signup}
+          to={loginUrl}
+          onClick={goToLogin}>
+          {t('login')}
+        </Link>
+
+      </div>
 
       <Footer />
     </div>
